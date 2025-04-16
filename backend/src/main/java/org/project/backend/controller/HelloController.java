@@ -1,4 +1,4 @@
-package org.project.backend;
+package org.project.backend.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
-    @GetMapping("/hello")
-    public String sayHello() {
-        return "Hello, world!";
+    @GetMapping("/")
+    public String hello() {
+        return "Hello World";
     }
+
 }
