@@ -1,3 +1,8 @@
-import org.project.backend.entities.Medicin;
-import org.springframework.data.jpa.repository.JpaRepository;
+package org.project.backend.service;
 
+import org.springframework.stereotype.Service;
+
+@Service
+public class MedecinService {
+
+}
