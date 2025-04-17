@@ -11,7 +11,7 @@ public class AppConfig {
     @Bean
     public static PropertySourcesPlaceholderConfigurer propertySourcesPlaceholderConfigurer() {
         PropertySourcesPlaceholderConfigurer configurer = new PropertySourcesPlaceholderConfigurer();
-        configurer.setLocation(new FileSystemResource(".env"));
+        configurer.setLocation(new FileSystemResource("Plateforme-d-Analyse-des-Dossiers-Medicaux-avec-Pipeline-Temps-Reel/.env"));
         return configurer;
     }
 
