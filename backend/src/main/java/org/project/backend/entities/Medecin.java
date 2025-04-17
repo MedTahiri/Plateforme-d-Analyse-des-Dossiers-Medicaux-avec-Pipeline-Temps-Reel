@@ -14,7 +14,7 @@ import java.util.Date;
 @Builder
 @Getter
 @Setter
-public class Medicin {
+public class Medecin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
