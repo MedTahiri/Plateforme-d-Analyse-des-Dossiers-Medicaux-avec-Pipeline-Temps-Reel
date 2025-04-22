@@ -32,7 +32,10 @@ class PatientController {
     public Patient createPatient(@RequestBody Patient createPatient){
      return null ;
     }
-
+    @DeleteMapping("/{id}")
+    public boolean deletePatient(@PathVariable Long id ){
+        return patientService.deletePatient(id);
+    }
 
 
 }
