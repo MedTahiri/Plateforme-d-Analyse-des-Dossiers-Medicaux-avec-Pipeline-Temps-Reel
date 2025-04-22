@@ -3,10 +3,7 @@ package org.project.backend.controller;
 import org.project.backend.entities.Patient;
 import org.project.backend.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,4 +23,19 @@ class PatientController {
     public Optional<Patient> getPatient(@PathVariable Long id) {
         return patientService.getPatientById(id);
     }
+
+    @PutMapping("/{id}")
+    public Patient updatePatient(@PathVariable Long id , @RequestBody Patient updatePatient) {
+        return patientService.updatePatient(id,updatePatient);
+    }
+    @PostMapping
+    public Patient createPatient(@RequestBody Patient createPatient){
+     return null ;
+    }
+    @DeleteMapping("/{id}")
+    public boolean deletePatient(@PathVariable Long id ){
+        return patientService.deletePatient(id);
+    }
+
+
 }
