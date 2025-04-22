@@ -46,8 +46,9 @@ public class PatientService {
         }
         return false;
     }
-    public Patient createPatient(Long id) {
-
+    public Patient createPatient(Patient createPatient) {
+        if (createPatient != null)
+            return patientRepository.save(createPatient);
         return null;
     }
 }
