@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import java.util.List;
+
 @Service
 public class SecretaireMedicalService {
     @Autowired
@@ -24,6 +26,20 @@ public class SecretaireMedicalService {
             return secretaireMedicalRepository.save(existingSecretaireMedical);
         }
     }
-        
-        
+
+
     }
+
+
+    public List<SecretaireMedical> getAllSecretaireMedical() {
+        return secretaireMedicalRepository.findAll();
+    }
+
+    public SecretaireMedical addSecretaireMedical(SecretaireMedical secretaireMedical) {
+        return secretaireMedicalRepository.save(secretaireMedical);
+    }
+
+    public SecretaireMedical getSecretaireMedicalById(Long id) {
+        return secretaireMedicalRepository.findById(id).orElse(null);
+    }
+}
