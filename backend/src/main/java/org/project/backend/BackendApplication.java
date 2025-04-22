@@ -19,6 +19,7 @@ public class BackendApplication {
     @Bean
     public CommandLineRunner start(PatientRepository patientRepository) {
         return args -> {
+            //Patient p=Patient.builder().id(null).name("hamza").prenom("Mr. Hamza").dateNaissance(new Date()).build();
             Patient p = new Patient(null, "yassir", "fahimmi", new Date());
             patientRepository.save(p); // Save the patient to the database
         };
