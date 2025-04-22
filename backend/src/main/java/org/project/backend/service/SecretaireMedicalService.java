@@ -11,21 +11,21 @@ import java.util.List;
 @Service
 public class SecretaireMedicalService {
     @Autowired
-    SecretaireMedicalRepository secretaireMedicalRepository;
+    private SecretaireMedicalRepository secretaireMedicalRepository;
     public void deleteSecretaireMedical(Long id) {
         secretaireMedicalRepository.deleteById(id);
     }
     public SecretaireMedical updateSecretaireMedical(Long id, SecretaireMedical updatedSecretaireMedical) {
-        SecretaireMedical existingSecretaireMedical = (SecretaireMedical) secretaireMedicalRepository.getSecretaireMedicalById(id);
-        if (existingSecretaireMedical == null) {
+        SecretaireMedical secretaireMedical =secretaireMedicalRepository.findById(id).orElse(null);
+        if (secretaireMedical == null) {
             return null;
         } else {
-            existingSecretaireMedical.setName(updatedSecretaireMedical.getName());
-            existingSecretaireMedical.setPrenom(updatedSecretaireMedical.getPrenom());
-            existingSecretaireMedical.setDateNaissance(updatedSecretaireMedical.getDateNaissance());
-            return secretaireMedicalRepository.save(existingSecretaireMedical);
+            secretaireMedical.setName(updatedSecretaireMedical.getName());
+            secretaireMedical.setPrenom(updatedSecretaireMedical.getPrenom());
+            secretaireMedical.setDateNaissance(updatedSecretaireMedical.getDateNaissance());
+            return secretaireMedicalRepository.save(secretaireMedical);
         }
-    }
+
 
 
     }

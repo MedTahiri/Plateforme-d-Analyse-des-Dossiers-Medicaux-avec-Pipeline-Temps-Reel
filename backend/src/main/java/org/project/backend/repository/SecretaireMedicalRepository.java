@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface SecretaireMedicalRepository extends JpaRepository<SecretaireMedical,Long> {
-    List<SecretaireMedical> getSecretaireMedicalById(Long id);
+
 }
