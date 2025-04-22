@@ -1,5 +1,6 @@
 package org.project.backend.service;
 
+import org.project.backend.entities.Medecin;
 import org.project.backend.entities.Patient;
 import org.project.backend.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +27,16 @@ public class PatientService {
         return patientRepository.findById(id);
     }
 
-    public Patient updatePatient(Patient patient) {
-        return patientRepository.save(patient);
+    public Patient updatePatient(Long id,Patient updatePatient) {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if (patient == null) {
+            return null;
+        } else {
+            patient.setName(updatePatient.getName());
+            patient.setPrenom(updatePatient.getPrenom());
+            patient.setDateNaissance(updatePatient.getDateNaissance());
+            return patientRepository.save(patient);
+        }
     }
 
     public boolean deletePatient(Long id) {
@@ -36,5 +45,9 @@ public class PatientService {
             return true;
         }
         return false;
+    }
+    public Patient createPatient(Long id) {
+
+        return null;
     }
 }
