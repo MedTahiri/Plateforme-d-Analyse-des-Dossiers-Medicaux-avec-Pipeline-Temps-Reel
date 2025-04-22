@@ -8,7 +8,8 @@ import java.util.Date;
 
 @Entity
 @Table(name = "patients")
-
+@NoArgsConstructor
+@AllArgsConstructor
 @ToString
 @Builder
 @Getter

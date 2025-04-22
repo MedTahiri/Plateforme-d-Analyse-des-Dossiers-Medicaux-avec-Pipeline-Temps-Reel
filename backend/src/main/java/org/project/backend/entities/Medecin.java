@@ -9,6 +9,7 @@ import java.util.Date;
 @Entity
 @Table(name = "medicins")
 
+
 @AllArgsConstructor
 @ToString
 @Builder
