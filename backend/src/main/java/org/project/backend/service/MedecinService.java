@@ -25,4 +25,23 @@ public class MedecinService {
         return medecinRepository.save(medecin);
     }
 
+    public Medecin updateMedecin(Long id, Medecin updatedMedecin) {
+        Medecin medecin = medecinRepository.findById(id).orElse(null);
+        if (medecin == null) {
+            return null;
+        } else {
+            medecin.setName(updatedMedecin.getName());
+            medecin.setPrenom(updatedMedecin.getPrenom());
+            medecin.setDateNaissance(updatedMedecin.getDateNaissance());
+            return medecinRepository.save(medecin);
+        }
+    }
+
+    public void deleteMedecin(Long id) {
+        Medecin medecin = medecinRepository.findById(id).orElse(null);
+        if (medecin != null) {
+            medecinRepository.delete(medecin);
+        }
+    }
+
 }

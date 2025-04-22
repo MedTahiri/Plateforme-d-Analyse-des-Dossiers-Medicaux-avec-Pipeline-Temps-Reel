@@ -30,4 +30,14 @@ public class MedecinController {
         return medecinService.add(medecin);
     }
 
+    @PutMapping("/{id}")
+    public Medecin updateMedecin(@PathVariable Long id, @RequestBody Medecin updateMedecin) {
+        return medecinService.updateMedecin(id, updateMedecin);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMedecin(@PathVariable Long id) {
+        medecinService.deleteMedecin(id);
+    }
+
 }

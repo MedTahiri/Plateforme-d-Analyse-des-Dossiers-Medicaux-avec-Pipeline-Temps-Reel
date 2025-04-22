@@ -5,12 +5,31 @@ import org.project.backend.repository.SecretaireMedicalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.List;
 
 @Service
 public class SecretaireMedicalService {
     @Autowired
-    SecretaireMedicalRepository secretaireMedicalRepository;
+    private SecretaireMedicalRepository secretaireMedicalRepository;
+    public void deleteSecretaireMedical(Long id) {
+        secretaireMedicalRepository.deleteById(id);
+    }
+    public SecretaireMedical updateSecretaireMedical(Long id, SecretaireMedical updatedSecretaireMedical) {
+        SecretaireMedical secretaireMedical =secretaireMedicalRepository.findById(id).orElse(null);
+        if (secretaireMedical == null) {
+            return null;
+        } else {
+            secretaireMedical.setName(updatedSecretaireMedical.getName());
+            secretaireMedical.setPrenom(updatedSecretaireMedical.getPrenom());
+            secretaireMedical.setDateNaissance(updatedSecretaireMedical.getDateNaissance());
+            return secretaireMedicalRepository.save(secretaireMedical);
+        }
+
+
+
+    }
+
 
     public List<SecretaireMedical> getAllSecretaireMedical() {
         return secretaireMedicalRepository.findAll();

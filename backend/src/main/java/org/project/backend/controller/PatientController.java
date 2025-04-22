@@ -30,7 +30,7 @@ class PatientController {
     }
     @PostMapping
     public Patient createPatient(@RequestBody Patient createPatient){
-     return null ;
+        return patientService.createPatient(createPatient);
     }
     @DeleteMapping("/{id}")
     public boolean deletePatient(@PathVariable Long id ){
