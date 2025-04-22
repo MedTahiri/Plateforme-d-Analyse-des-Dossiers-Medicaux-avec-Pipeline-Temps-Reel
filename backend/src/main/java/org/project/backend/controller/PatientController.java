@@ -1,16 +1,18 @@
 package org.project.backend.controller;
 
 import org.project.backend.entities.Patient;
-import org.project.backend.repository.PatientRepository;
 import org.project.backend.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Optional;
 
-@RestController("/api/patients")
+@RestController
+@RequestMapping("/api/patients")
 class PatientController {
     @Autowired
     PatientService patientService;
@@ -20,9 +22,8 @@ class PatientController {
         return patientService.getAllPatients();
     }
 
-    @GetMapping({"/{id}"})
-    public Patient getPatient(Long id) {
+    @GetMapping("/{id}")
+    public Optional<Patient> getPatient(@PathVariable Long id) {
         return patientService.getPatientById(id);
     }
-
 }
