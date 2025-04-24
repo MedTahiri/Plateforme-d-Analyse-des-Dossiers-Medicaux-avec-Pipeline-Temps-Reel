@@ -10,8 +10,9 @@ public class RendezVous {
     private Date date;
     private boolean status;
     @ManyToOne
+    @JoinColumn(name = "medicin_id")
     private Medecin medecin;
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "patient_id")
     private Patient patient;
 }

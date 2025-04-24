@@ -25,7 +25,7 @@ public class Medecin {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date dateNaissance;
-    @OneToMany
+    @OneToMany(mappedBy = "medecin")
     private List<RendezVous> rendezVousList;
 
 }
