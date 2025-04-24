@@ -5,6 +5,7 @@ import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "patients")
@@ -23,12 +24,50 @@ public class Patient {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date dateNaissance;
+    @OneToMany(mappedBy = "patient")
+    private List<RendezVous> rendezVousList;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public Patient(Long l,String name, String prenom, Date dateNaissance) {
         this.name = name;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Patient() {}
     public Long getId() {
         return id;
