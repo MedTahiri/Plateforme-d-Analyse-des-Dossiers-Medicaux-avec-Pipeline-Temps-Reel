@@ -24,6 +24,5 @@ public class RendezVous {
     private Medecin medecin;
     @ManyToOne()
     @JoinColumn(name = "patient_id")
-    @JsonIgnore
     private Patient patient;
 }
