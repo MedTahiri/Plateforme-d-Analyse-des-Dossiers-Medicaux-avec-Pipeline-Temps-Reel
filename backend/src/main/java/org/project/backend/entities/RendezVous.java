@@ -1,15 +1,16 @@
 package org.project.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+
+@Builder
 @Getter
 @Setter
 public class RendezVous {
@@ -21,8 +22,8 @@ public class RendezVous {
     @ManyToOne
     @JoinColumn(name = "medecin_id")
     private Medecin medecin;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "patient_id")
+    @JsonIgnore
     private Patient patient;
 }
-

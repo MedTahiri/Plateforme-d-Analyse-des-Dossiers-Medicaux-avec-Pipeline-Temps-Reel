@@ -1,5 +1,7 @@
 package org.project.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,7 +27,8 @@ public class Medecin {
     @Temporal(TemporalType.DATE)
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date dateNaissance;
-    @OneToMany(mappedBy = "medecin")
+    @OneToMany(mappedBy = "medecin" , fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<RendezVous> rendezVousList;
 
 }
