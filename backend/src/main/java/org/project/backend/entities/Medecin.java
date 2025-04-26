@@ -30,5 +30,7 @@ public class Medecin {
     @OneToMany(mappedBy = "medecin" , fetch = FetchType.LAZY)
     @JsonIgnore
     private List<RendezVous> rendezVousList;
-
+    @ManyToMany(mappedBy = "medecins")
+    @JsonIgnore
+    private List<DME> dmes;
 }
