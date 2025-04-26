@@ -13,9 +13,10 @@ import java.util.List;
 @Table(name = "patients")
 //@NoArgsConstructor
 //@AllArgsConstructor
-@ToString
+//@ToString
 //@Builder
-
+//@Getter
+//@Setter
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,16 +31,21 @@ public class Patient {
     @JsonIgnore
     private List<RendezVous> rendezVousList;
 
-    public Patient() {}
-    public Patient(Long id,String name, String prenom, Date dateNaissance) {
-        this.id = id;
+    @OneToMany(mappedBy = "patient")
+    private List<DME> dmes;
+
+
+
+
+
+    public Patient(Long l,String name, String prenom, Date dateNaissance) {
         this.name = name;
         this.prenom = prenom;
         this.dateNaissance = dateNaissance;
         this.rendezVousList = new ArrayList<>();
 
     }
-
+    public Patient() {}
     public Long getId() {
         return id;
     }
@@ -79,4 +85,6 @@ public class Patient {
     public void setRendezVousList(List<RendezVous> rendezVousList) {
         this.rendezVousList = rendezVousList;
     }
+
+
 }

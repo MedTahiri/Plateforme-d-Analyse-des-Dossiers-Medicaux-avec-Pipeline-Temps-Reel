@@ -1,7 +1,6 @@
 package org.project.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,6 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "medecins")
+
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
