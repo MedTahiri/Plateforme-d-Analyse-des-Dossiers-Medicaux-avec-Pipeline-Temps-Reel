@@ -1,6 +1,8 @@
 package org.project.backend.controller;
 
+import org.project.backend.entities.DME;
 import org.project.backend.entities.Patient;
+import org.project.backend.entities.Resultat;
 import org.project.backend.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +38,13 @@ class PatientController {
     public boolean deletePatient(@PathVariable Long id ){
         return patientService.deletePatient(id);
     }
-
+    @GetMapping("/{id}/dmes")
+    public  List<DME> getDmes(@PathVariable Long id){
+        return patientService.getAllDmes(id);
+    }
+    @GetMapping("/{id}/resultats")
+    public  List<Resultat> getResultats(@PathVariable Long id){
+        return patientService.getAllResultats(id);
+    }
 
 }

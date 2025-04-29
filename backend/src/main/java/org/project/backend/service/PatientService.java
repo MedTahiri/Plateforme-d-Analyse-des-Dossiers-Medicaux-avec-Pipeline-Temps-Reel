@@ -1,11 +1,14 @@
 package org.project.backend.service;
 
+import org.project.backend.entities.DME;
 import org.project.backend.entities.Medecin;
 import org.project.backend.entities.Patient;
+import org.project.backend.entities.Resultat;
 import org.project.backend.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,7 +21,29 @@ public class PatientService {
     public List<Patient> getAllPatients() {
         return patientRepository.findAll();
     }
+    public List<DME> getAllDmes(Long id) {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if (patient == null) {
+            return null;
+        } else {
+            return patient.getDmes();
+        }
 
+    }
+    public List<Resultat> getAllResultats(Long id) {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if (patient == null) {
+            return null;
+        } else {
+            List<DME> Ldmes = patient.getDmes();
+            List<Resultat> listeResultats = new ArrayList<>();
+            for (DME dme : Ldmes){
+                listeResultats.addAll(dme.getResultatList());
+            }
+            return listeResultats;
+        }
+
+    }
     public Patient addPatient(Patient patient) {
         return patientRepository.save(patient);
     }
