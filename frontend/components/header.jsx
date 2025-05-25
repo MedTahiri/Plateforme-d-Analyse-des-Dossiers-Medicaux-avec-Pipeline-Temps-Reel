@@ -12,7 +12,10 @@ export function Header() {
                 <DropdownMenu>
                     <DropdownMenuTrigger><User/></DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuLabel><Button className="w-full" variant="outline">Log out</Button></DropdownMenuLabel>
+                        <DropdownMenuLabel><Button className="w-full"
+                                                   variant="outline">Profile</Button></DropdownMenuLabel>
+                        <DropdownMenuLabel><Button className="w-full" variant="outline">Log
+                            out</Button></DropdownMenuLabel>
                     </DropdownMenuContent>
                 </DropdownMenu>
 
