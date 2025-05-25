@@ -13,23 +13,25 @@ import {Label} from "@/components/ui/label"
 import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {useState} from "react";
 import {useRouter} from "next/navigation";
+import {login} from "@/services/Services";
 
 export default function Login() {
 
-    const [role, setRole] = useState("patient")
-    const [email, setEmail] = useState("")
+    //const [role, setRole] = useState("patient")
+    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
 
     const router = useRouter()
 
-    const login = (e) => {
+    const loginfunction = (e) => {
+        console.log({username, password})
       e.preventDefault()
-        console.log({
-          email,
-          password,
-          role
-      })
-        router.push("/")
+        login({username, password}).then(res => {
+                if (res.status === 200) {
+                    router.push("/")
+                }
+
+        }).catch(console.error)
     }
 
     return (
@@ -44,24 +46,24 @@ export default function Login() {
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <form onSubmit={login}>
+                            <form onSubmit={loginfunction}>
                                 <div className="flex flex-col gap-6">
-                                    <Tabs defaultValue="patient" onValueChange={setRole} className="w-full grid gap-2">
-                                        <TabsList className="grid w-full grid-cols-4">
-                                            <TabsTrigger value="admin">Admin</TabsTrigger>
-                                            <TabsTrigger value="patient">Patient</TabsTrigger>
-                                            <TabsTrigger value="medecin">Medecin</TabsTrigger>
-                                            <TabsTrigger value="secretaire">Secretaire</TabsTrigger>
-                                        </TabsList>
-                                    </Tabs>
+                                    {/*<Tabs defaultValue="patient" onValueChange={setRole} className="w-full grid gap-2">*/}
+                                    {/*    <TabsList className="grid w-full grid-cols-4">*/}
+                                    {/*        <TabsTrigger value="admin">Admin</TabsTrigger>*/}
+                                    {/*        <TabsTrigger value="patient">Patient</TabsTrigger>*/}
+                                    {/*        <TabsTrigger value="medecin">Medecin</TabsTrigger>*/}
+                                    {/*        <TabsTrigger value="secretaire">Secretaire</TabsTrigger>*/}
+                                    {/*    </TabsList>*/}
+                                    {/*</Tabs>*/}
                                     <div className="grid gap-2">
-                                        <Label htmlFor="email">Email</Label>
+                                        <Label htmlFor="username">UserName</Label>
                                         <Input
-                                            id="email"
-                                            type="email"
-                                            value={email}
+                                            id="username"
+                                            type="text"
+                                            value={username}
                                             placeholder="m@example.com"
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) => setUsername(e.target.value)}
                                             required
                                         />
                                     </div>

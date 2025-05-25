@@ -24,12 +24,13 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/dme/**").hasAnyRole("MEDECIN")
+                        .requestMatchers("/api/dme/**").hasAnyRole("MEDECIN","ADMIN")
                         .requestMatchers("/api/medecins/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/patients/**").hasAnyRole("SECRETAIRE_MEDICAL")
-                        .requestMatchers("/api/rendezvous/**").hasAnyRole("SECRETAIRE_MEDICAL")
-                        .requestMatchers("/api/resultat/**").hasAnyRole("MEDECIN", "SECRETAIRE_MEDICAL", "PATIENT")
+                        .requestMatchers("/api/patients/**").hasAnyRole("SECRETAIRE_MEDICAL","ADMIN")
+                        .requestMatchers("/api/rendezvous/**").hasAnyRole("SECRETAIRE_MEDICAL","ADMIN")
+                        .requestMatchers("/api/resultat/**").hasAnyRole("MEDECIN", "SECRETAIRE_MEDICAL", "PATIENT","ADMIN")
                         .requestMatchers("/api/secretaires/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/auth/login").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(AbstractHttpConfigurer::disable) // pas de page HTML de login
