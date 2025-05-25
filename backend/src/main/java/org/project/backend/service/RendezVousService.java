@@ -14,17 +14,27 @@ public class RendezVousService {
     public void AddRendezVous(RendezVous rendezVous) {
         rendezVousRepository.save(rendezVous);
     }
-    public RendezVous updateRendezVous(Long id,RendezVous rendezVous) {
-        RendezVous rendezVous1=rendezVousRepository.findById(id).orElse(null);
-        if(rendezVous!=null) {
-            rendezVous1.setDate(rendezVous.getDate());
-            rendezVous1.setMedecin(rendezVous.getMedecin());
-            rendezVous1.setPatient(rendezVous.getPatient());
-            rendezVous1.setStatus(rendezVous.getStatus());
-            rendezVousRepository.save(rendezVous1);
+    public RendezVous updateRendezVous(Long id, RendezVous updatedRendezVous) {
+        RendezVous rendezVous = rendezVousRepository.findById(id).orElse(null);
+        if (rendezVous == null) {
+            return null;
+        } else {
+            if (updatedRendezVous.getDate() != null) {
+                rendezVous.setDate(updatedRendezVous.getDate());
+            }
+            if (updatedRendezVous.getMedecin() != null) {
+                rendezVous.setMedecin(updatedRendezVous.getMedecin());
+            }
+            if (updatedRendezVous.getPatient() != null) {
+                rendezVous.setPatient(updatedRendezVous.getPatient());
+            }
+            if (updatedRendezVous.getStatus() != null) {
+                rendezVous.setStatus(updatedRendezVous.getStatus());
+            }
+            return rendezVousRepository.save(rendezVous);
         }
-        return null;
     }
+
     public void DeleteRendezVous(Long id) {
         rendezVousRepository.deleteById(id);
     }

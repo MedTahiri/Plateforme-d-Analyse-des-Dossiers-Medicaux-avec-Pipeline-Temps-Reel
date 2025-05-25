@@ -16,7 +16,8 @@ public class Resultat {
     private Long id;
 
     private String typeAnalyse;
-
+    private String description ;
+    private String url ;
     @ManyToOne
     @JoinColumn(name="dme_id")
     @JsonIgnore
