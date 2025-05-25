@@ -73,3 +73,27 @@ export async function getUser(id,role) {
         console.error(error);
     }
 }
+
+export async function getAllRendezVous(by,id) {
+    if (by){
+        try {
+            return await axios.get(url + '/api/rendezvous/' + by + "?id=" + id);
+        } catch (error) {
+            console.error(error);
+        }
+    }else{
+        try {
+            return await axios.get(url + '/api/rendezvous');
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
+export async function deleteRendezVous(id) {
+    try {
+        return await axios.delete(url + '/api/rendezvous/' + id);
+    } catch (error) {
+        console.error(error);
+    }
+}
