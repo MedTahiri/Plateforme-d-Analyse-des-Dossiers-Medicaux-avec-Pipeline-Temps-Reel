@@ -58,4 +58,8 @@ public class SecretaireMedicalService {
     public SecretaireMedical getSecretaireMedicalById(Long id) {
         return secretaireMedicalRepository.findById(id).orElse(null);
     }
+
+    public Object getSecretaireMedicalByUsername(String username) {
+        return secretaireMedicalRepository.getSecretaireMedicalByUsername(username);
+    }
 }

@@ -27,7 +27,7 @@ export default function Secretaires() {
     const [searchQuery, setSearchQuery] = useState("");
 
     const fetchData = () => {
-        getAllPatients().then(data => setPatients(data?.data || [])).catch(console.error);
+        getAllPatients().then(data => {setPatients(data?.data || [])}).catch(console.error);
         // getAllRendezVous("",0).then(data=>setRendezVous(data?.data || [])).catch(console.error);
     };
 

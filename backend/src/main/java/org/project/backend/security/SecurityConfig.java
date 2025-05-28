@@ -24,18 +24,19 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/dme/**").hasAnyRole("MEDECIN","ADMIN")
-                        .requestMatchers("/api/medecins/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/patients/**").hasAnyRole("SECRETAIRE_MEDICAL","ADMIN")
-                        .requestMatchers("/api/rendezvous/**").hasAnyRole("SECRETAIRE_MEDICAL","ADMIN")
-                        .requestMatchers("/api/resultat/**").hasAnyRole("MEDECIN", "SECRETAIRE_MEDICAL", "PATIENT","ADMIN")
-                        .requestMatchers("/api/secretaires/**").hasAnyRole("ADMIN")
-                        .requestMatchers("/auth/login").permitAll()
-                        .anyRequest().authenticated()
+//                        .requestMatchers("/api/dme/**").hasAnyRole("MEDECIN","ADMIN")
+//                        .requestMatchers("/api/medecins/**").hasAnyRole("ADMIN")
+//                        .requestMatchers("/api/patients/**").hasAnyRole("SECRETAIRE_MEDICAL","ADMIN")
+//                        .requestMatchers("/api/rendezvous/**").hasAnyRole("SECRETAIRE_MEDICAL","ADMIN")
+//                        .requestMatchers("/api/resultat/**").hasAnyRole("MEDECIN", "SECRETAIRE_MEDICAL", "PATIENT","ADMIN")
+//                        .requestMatchers("/api/secretaires/**").hasAnyRole("ADMIN")
+//                        .requestMatchers("/auth/login").permitAll()
+//                        .anyRequest().authenticated()
+                                .anyRequest().permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable) // pas de page HTML de login
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS activé
-                .httpBasic(httpBasic -> {}); // Auth HTTP simple (ou à remplacer par JWT plus tard)
+                .httpBasic(AbstractHttpConfigurer::disable); // Auth HTTP simple (ou à remplacer par JWT plus tard)
 
         return http.build();
     }

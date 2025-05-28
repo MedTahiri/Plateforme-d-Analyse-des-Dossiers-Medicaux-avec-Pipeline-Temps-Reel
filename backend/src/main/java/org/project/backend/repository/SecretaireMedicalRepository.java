@@ -8,4 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SecretaireMedicalRepository extends JpaRepository<SecretaireMedical,Long> {
 
+    Object findByUsername(String username);
+
+    Object getSecretaireMedicalByUsername(String username);
 }

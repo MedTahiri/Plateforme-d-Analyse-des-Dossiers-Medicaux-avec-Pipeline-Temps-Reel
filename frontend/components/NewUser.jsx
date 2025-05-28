@@ -7,6 +7,8 @@ import {Input} from "@/components/ui/input";
 
 export default function NewUser({role, refreshData}) {
 
+    const [username,setusername] = useState("")
+    const [password,setpassword] = useState("")
     const [name, setname] = useState("")
     const [prenom, setprenom] = useState("")
     const [dateNaissance, setdateNaissance] = useState("")
@@ -15,7 +17,9 @@ export default function NewUser({role, refreshData}) {
 
 
     const saveUser = () => {
-        createUser(name, prenom, dateNaissance, role).then(() => {
+        createUser(username,password,name, prenom, dateNaissance, role).then(() => {
+            setusername("")
+            setpassword("")
             setname("");
             setprenom("");
             setdateNaissance("");
@@ -35,6 +39,24 @@ export default function NewUser({role, refreshData}) {
             </DialogHeader>
             <div className="grid gap-4 py-4">
                 <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="username" className="text-right">
+                        username
+                    </Label>
+                    <Input
+                        id="username"
+                        value={username}
+                        onChange={(e) => setusername(e.target.value)}
+                        className="col-span-3"
+                    />
+                    <Label htmlFor="password" className="text-right">
+                        password
+                    </Label>
+                    <Input
+                        id="password"
+                        value={password}
+                        onChange={(e) => setpassword(e.target.value)}
+                        className="col-span-3"
+                    />
                     <Label htmlFor="nom" className="text-right">
                         Nom
                     </Label>

@@ -63,4 +63,7 @@ public class MedecinService {
         return false;
     }
 
+    public Object getMedecinByUsername(String username) {
+        return medecinRepository.getMedecinByUsername(username);
+    }
 }

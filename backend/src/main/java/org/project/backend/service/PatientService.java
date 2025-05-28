@@ -3,6 +3,7 @@ package org.project.backend.service;
 import org.project.backend.entities.DME;
 import org.project.backend.entities.Patient;
 import org.project.backend.entities.Resultat;
+import org.project.backend.entities.Utilisateur;
 import org.project.backend.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -92,4 +93,7 @@ public class PatientService {
         return false;
     }
 
+    public Object getPatientByUsername(String username) {
+        return patientRepository.getPatientByUsername(username);
+    }
 }
