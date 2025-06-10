@@ -104,26 +104,111 @@ export async function getUser(id, role) {
     }
 }
 
-export async function getAllRendezVous(by, id) {
-    if (by) {
-        try {
-            return await axios.get(url + '/api/rendezvous/' + by + "?id=" + id, {withCredentials: true});
-        } catch (error) {
-            console.error(error);
-        }
-    } else {
-        try {
-            return await axios.get(url + '/api/rendezvous', {withCredentials: true});
-        } catch (error) {
-            console.error(error);
-        }
-    }
-}
-
-export async function deleteRendezVous(id) {
+export async function getAllRendezVous() {
     try {
-        return await axios.delete(url + '/api/rendezvous/' + id, {withCredentials: true});
+        return await axios.get(url + '/api/rendezvous', {withCredentials: true});
     } catch (error) {
         console.error(error);
     }
 }
+
+export const deleteRendezVous = async (id) => {
+    try {
+        const response = await fetch(`${url}/api/rendezvous/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return { success: true, message: 'Rendez-vous supprimé avec succès' };
+    } catch (error) {
+        console.error('Error deleting rendez-vous:', error);
+        throw error;
+    }
+};
+
+export const createRendezVous = async (rendezVousData) => {
+    try {
+        const response = await fetch(`${url}/api/rendezvous`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(rendezVousData)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return { success: true, message: 'Rendez-vous créé avec succès' };
+    } catch (error) {
+        console.error('Error creating rendez-vous:', error);
+        throw error;
+    }
+};
+
+export const getRendezVousById = async (id) => {
+    try {
+        const response = await fetch(`${url}/api/rendezvous/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching rendez-vous by ID:', error);
+        throw error;
+    }
+};
+export const updateRendezVous = async (id, rendezVousData) => {
+    try {
+        const response = await fetch(`${url}/api/rendezvous/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(rendezVousData)
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        return { success: true, message: 'Rendez-vous mis à jour avec succès' };
+    } catch (error) {
+        console.error('Error updating rendez-vous:', error);
+        throw error;
+    }
+};
+
+export const getRendezVousByMedecin = async (medecinId) => {
+    try {
+        const response = await axios.get(`${url}/api/rendezvous/medecin?id=${medecinId}`, {withCredentials: true});
+        return response;
+    } catch (error) {
+        console.error('Error fetching rendez-vous by medecin:', error);
+        throw error;
+    }
+};
+
+export const getRendezVousByPatient = async (patientId) => {
+    try {
+        const response = await axios.get(`${url}/api/rendezvous/patient?id=${patientId}`, {withCredentials: true});
+        return response;
+    } catch (error) {
+        console.error('Error fetching rendez-vous by patient:', error);
+        throw error;
+    }
+};

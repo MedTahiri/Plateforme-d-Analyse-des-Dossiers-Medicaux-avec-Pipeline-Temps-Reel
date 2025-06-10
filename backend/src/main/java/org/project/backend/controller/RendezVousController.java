@@ -1,6 +1,7 @@
 package org.project.backend.controller;
 
 import org.project.backend.entities.RendezVous;
+import org.project.backend.repository.RendezVousRepository;
 import org.project.backend.service.RendezVousService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,13 @@ import java.util.List;
 public class RendezVousController {
     @Autowired
     RendezVousService rendezVousService;
+    @Autowired
+    private RendezVousRepository rendezVousRepository;
 
+    @GetMapping
+    public List<RendezVous> getRendezVous() {
+        return rendezVousRepository.findAll();
+    }
     @GetMapping("/medecin")
     public List<RendezVous> getAllRendezVousByMedecin(@RequestParam("id") Long medecinID) {
         return rendezVousService.getAllRendezVousByMedecin(medecinID);

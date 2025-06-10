@@ -13,7 +13,7 @@ import {
     deletePatient, deleteRendezVous, deletesecretaires,
     getAllMedecins,
     getAllPatients, getAllRendezVous,
-    getAllSecretaires
+    getAllSecretaires, getRendezVousByMedecin
 } from "@/services/Services";
 import UpdateUser from "@/components/UpdateUser";
 import {Input} from "@/components/ui/input";
@@ -28,7 +28,7 @@ export default function Medecin() {
 
     const fetchData = () => {
         getAllPatients().then(data => setPatients(data?.data || [])).catch(console.error);
-        getAllRendezVous("medecin",1).then(data=>setRendezVous(data?.data || [])).catch(console.error);
+        getRendezVousByMedecin().then(data=>setRendezVous(data?.data || [])).catch(console.error);
     };
 
     useEffect(() => {

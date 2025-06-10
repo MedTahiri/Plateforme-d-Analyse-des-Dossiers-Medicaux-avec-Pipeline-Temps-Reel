@@ -74,7 +74,7 @@ export default function Patient({params}) {
                                     </div>
 
                                     {/*<NewUser role={"patients"} refreshData={fetchData()}/>*/}
-                                    <NewRendezVous refreshData={fetchData()}/>
+                                    {/*<NewRendezVous refreshData={fetchData()}/>*/}
 
                                 </CardHeader>
                                 <CardContent>
@@ -85,7 +85,7 @@ export default function Patient({params}) {
                                                 <TableHead>date</TableHead>
                                                 <TableHead>status</TableHead>
                                                 <TableHead>medecin</TableHead>
-                                                <TableHead className="text-right">Actions</TableHead>
+                                                {/*<TableHead className="text-right">Actions</TableHead>*/}
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
@@ -98,20 +98,20 @@ export default function Patient({params}) {
                                                     })}</TableCell>
                                                     <TableCell>{item?.status}</TableCell>
                                                     <TableCell>{item?.medecin?.prenom + " " + item?.medecin?.name}</TableCell>
-                                                    <TableCell
-                                                        className="text-right space-x-2 flex justify-end items-center">
-                                                        <UpdateRendezVous refreshData={fetchData}
-                                                                          id={item.id}/>
-                                                        <Button
-                                                            variant="destructive"
-                                                            size="sm"
-                                                            onClick={() => deleterendezvous(item?.id)}
-                                                            aria-label="Delete user"
-                                                            className="p-2"
-                                                        >
-                                                            <Trash2 className="h-4 w-4"/>
-                                                        </Button>
-                                                    </TableCell>
+                                                    {/*<TableCell*/}
+                                                    {/*    className="text-right space-x-2 flex justify-end items-center">*/}
+                                                    {/*    <UpdateRendezVous refreshData={fetchData}*/}
+                                                    {/*                      id={item.id}/>*/}
+                                                        {/*<Button*/}
+                                                        {/*    variant="destructive"*/}
+                                                        {/*    size="sm"*/}
+                                                        {/*    onClick={() => deleterendezvous(item?.id)}*/}
+                                                        {/*    aria-label="Delete user"*/}
+                                                        {/*    className="p-2"*/}
+                                                        {/*>*/}
+                                                        {/*    <Trash2 className="h-4 w-4"/>*/}
+                                                        {/*</Button>*/}
+                                                    {/*</TableCell>*/}
 
                                                 </TableRow>
                                             ))}
