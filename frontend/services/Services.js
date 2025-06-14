@@ -212,3 +212,22 @@ export const getRendezVousByPatient = async (patientId) => {
         throw error;
     }
 };
+export const annulerRendezVous = async (id) => {
+    try {
+        const response = await axios.put(`${url}/api/rendezvous/annuler/${id}`, {}, {withCredentials: true});
+        return { success: true, message: 'Rendez-vous annulé avec succès', data: response.data };
+    } catch (error) {
+        console.error('Error cancelling rendez-vous:', error);
+        throw error;
+    }
+};
+
+export const terminerRendezVous = async (id) => {
+    try {
+        const response = await axios.put(`${url}/api/rendezvous/terminer/${id}`, {}, {withCredentials: true});
+        return { success: true, message: 'Rendez-vous terminé avec succès', data: response.data };
+    } catch (error) {
+        console.error('Error completing rendez-vous:', error);
+        throw error;
+    }
+};

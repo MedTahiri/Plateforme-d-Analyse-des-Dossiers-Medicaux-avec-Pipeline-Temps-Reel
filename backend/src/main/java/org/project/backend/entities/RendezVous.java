@@ -16,7 +16,7 @@ import java.util.Date;
 public class RendezVous {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private Date date;
     private String status;
     @ManyToOne
