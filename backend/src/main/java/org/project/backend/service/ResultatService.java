@@ -27,17 +27,14 @@ public class ResultatService {
         if (resultat == null) {
             return null;
         } else {
-            if (updatedResultat.getDescription() != null) {
-                resultat.setDescription(updatedResultat.getDescription());
-            }
+            //if (updatedResultat.getValeur() != null) {
+                resultat.setValeur(updatedResultat.getValeur());
+            //}
             if (updatedResultat.getDossier() != null) {
                 resultat.setDossier(updatedResultat.getDossier());
             }
-            if (updatedResultat.getTypeAnalyse() != null) {
-                resultat.setTypeAnalyse(updatedResultat.getTypeAnalyse());
-            }
-            if (updatedResultat.getUrl() != null) {
-                resultat.setUrl(updatedResultat.getUrl());
+            if (updatedResultat.getDateMesure() != null) {
+                resultat.setDateMesure(updatedResultat.getDateMesure());
             }
             return resultatRepository.save(resultat);
         }

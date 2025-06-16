@@ -1,6 +1,7 @@
 package org.project.backend.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -17,9 +18,15 @@ public class Medecin extends Utilisateur {
     @JsonIgnore
     private List<RendezVous> rendezVousList;
 
+    //TODO()
     @ManyToMany(mappedBy = "medecins")
     @JsonIgnore
     private List<DME> dmes;
+
+    @OneToMany(mappedBy = "medcin")
+    @JsonManagedReference("medcin-seuilpr")
+    private List<SeuilPR> seuilPRS;
+
 
 
     public  Medecin() {

@@ -1,16 +1,18 @@
 package org.project.backend.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
-@Data
+//@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Getter
+@Setter
 public class DME {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,9 +22,11 @@ public class DME {
 
     @ManyToOne
     @JoinColumn(name = "patient_id")
+    @JsonBackReference("patient-dossiers")
     private Patient patient;
 
     @OneToMany(mappedBy = "dossier")
+    @JsonManagedReference("dme-resultats")
     private List<Resultat> resultatList;
     private String url ;
     @ManyToMany
