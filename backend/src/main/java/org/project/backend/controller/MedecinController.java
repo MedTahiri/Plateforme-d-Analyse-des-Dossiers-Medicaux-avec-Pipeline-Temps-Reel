@@ -1,6 +1,7 @@
 package org.project.backend.controller;
 
 import org.project.backend.entities.Medecin;
+import org.project.backend.entities.SeuilPR;
 import org.project.backend.service.MedecinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +32,14 @@ public class MedecinController {
     public Medecin updateMedecin(@PathVariable Long id, @RequestBody Medecin updateMedecin) {
         return medecinService.updateMedecin(id, updateMedecin);
     }
-
+    @GetMapping("/seuil/{id}")
+    public List<SeuilPR> getAllSeuilbypatient(@PathVariable Long id){
+        return medecinService.getAllSeuilbypatient(id);
+    }
+    @PostMapping("/seuil")
+    public SeuilPR ajouterSeuil(@RequestBody SeuilPR seuilPR){
+        return medecinService.addSeuil(seuilPR);
+    }
     @DeleteMapping("/{id}")
     public boolean deleteMedecin(@PathVariable Long id) {
         return medecinService.deleteMedecin(id);

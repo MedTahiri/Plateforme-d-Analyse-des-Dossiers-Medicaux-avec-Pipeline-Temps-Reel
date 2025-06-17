@@ -1,7 +1,11 @@
 package org.project.backend.service;
 
+import org.project.backend.entities.Indicateur;
 import org.project.backend.entities.Medecin;
+import org.project.backend.entities.Patient;
+import org.project.backend.entities.SeuilPR;
 import org.project.backend.repository.MedecinRepository;
+import org.project.backend.repository.SeuilPR_JPA;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,6 +18,25 @@ public class MedecinService {
     private PasswordEncoder passwordEncoder ;
     @Autowired
     private MedecinRepository medecinRepository;
+    @Autowired
+    private SeuilPR_JPA seuilPRJpa;
+    public List<SeuilPR> getAllSeuilbypatient(Long patient_id){
+        return seuilPRJpa.findByPatientId(patient_id);
+    }
+    public SeuilPR addSeuil(SeuilPR seuilPR){
+        if(seuilPRJpa.findSeuilPRByIndicateurAndPatientAndMedcin( seuilPR.getIndicateur(),  seuilPR.getPatient() ,  seuilPR.getMedcin()) == null){
+            return  seuilPRJpa.save(seuilPR);
+
+        }
+        else {
+            SeuilPR seuilPR1 = seuilPRJpa.findSeuilPRByIndicateurAndPatientAndMedcin( seuilPR.getIndicateur(),  seuilPR.getPatient() ,  seuilPR.getMedcin());
+            seuilPR1.setSeuilMax(seuilPR.getSeuilMax());
+            seuilPR1.setSeuiMin(seuilPR.getSeuiMin());
+            seuilPR1.setDateDefinition(seuilPR.getDateDefinition());
+            return seuilPRJpa.save(seuilPR1);
+
+        }
+    }
 
     public List<Medecin> getAllMedecin(){
         return medecinRepository.findAll();
