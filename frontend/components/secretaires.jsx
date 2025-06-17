@@ -108,12 +108,12 @@ export default function Secretaires() {
                         </h1>
                         <p className="text-gray-600 text-lg">Gestion des patients et rendez-vous</p>
                     </div>
-                    <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-lg shadow-sm border">
-                            <Activity className="h-5 w-5 text-green-500" />
-                            <span className="text-sm font-medium">Système actif</span>
-                        </div>
-                    </div>
+                    {/*<div className="flex items-center space-x-4">*/}
+                    {/*    <div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-lg shadow-sm border">*/}
+                    {/*        <Activity className="h-5 w-5 text-green-500" />*/}
+                    {/*        <span className="text-sm font-medium">Système actif</span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
 
                 {/* Stats Cards */}
@@ -148,7 +148,7 @@ export default function Secretaires() {
                                 <div>
                                     <p className="text-purple-100">Confirmés</p>
                                     <p className="text-3xl font-bold">
-                                        {rendezVous.filter(rv => rv.status === 'Confirmé').length}
+                                        {rendezVous.filter(rv => rv.status === 'terminé').length}
                                     </p>
                                 </div>
                                 <UserCheck className="h-10 w-10 text-purple-200" />
@@ -215,7 +215,7 @@ export default function Secretaires() {
                                         <TableHeader>
                                             <TableRow className="border-b border-gray-100">
                                                 <TableHead className="py-4 text-gray-700 font-semibold">Patient</TableHead>
-                                                <TableHead className="py-4 text-gray-700 font-semibold">Contact</TableHead>
+                                                {/*<TableHead className="py-4 text-gray-700 font-semibold">Contact</TableHead>*/}
                                                 <TableHead className="py-4 text-gray-700 font-semibold">Date Naissance</TableHead>
                                                 <TableHead className="text-right py-4 text-gray-700 font-semibold">Actions</TableHead>
                                             </TableRow>
@@ -237,18 +237,18 @@ export default function Secretaires() {
                                                                 </div>
                                                             </div>
                                                         </TableCell>
-                                                        <TableCell className="py-4">
-                                                            <div className="space-y-1">
-                                                                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                                                                    <Phone className="h-3 w-3" />
-                                                                    <span>{item?.phone}</span>
-                                                                </div>
-                                                                <div className="flex items-center space-x-2 text-sm text-gray-600">
-                                                                    <Mail className="h-3 w-3" />
-                                                                    <span>{item?.email}</span>
-                                                                </div>
-                                                            </div>
-                                                        </TableCell>
+                                                        {/*<TableCell className="py-4">*/}
+                                                        {/*    <div className="space-y-1">*/}
+                                                        {/*        <div className="flex items-center space-x-2 text-sm text-gray-600">*/}
+                                                        {/*            <Phone className="h-3 w-3" />*/}
+                                                        {/*            <span>{item?.phone}</span>*/}
+                                                        {/*        </div>*/}
+                                                        {/*        <div className="flex items-center space-x-2 text-sm text-gray-600">*/}
+                                                        {/*            <Mail className="h-3 w-3" />*/}
+                                                        {/*            <span>{item?.email}</span>*/}
+                                                        {/*        </div>*/}
+                                                        {/*    </div>*/}
+                                                        {/*</TableCell>*/}
                                                         <TableCell className="py-4">
                                                             <span className="text-gray-700">{new Date(item?.dateNaissance).toLocaleDateString('fr-FR')}</span>
                                                         </TableCell>

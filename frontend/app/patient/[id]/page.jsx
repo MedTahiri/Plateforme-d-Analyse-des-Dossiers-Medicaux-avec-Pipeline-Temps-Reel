@@ -33,8 +33,7 @@ import {
     XCircle,
     Stethoscope
 } from "lucide-react";
-import {Input} from "@/components/ui/input";
-import NewUser from "@/components/NewUser";
+
 import {
     Table,
     TableBody,
@@ -47,13 +46,9 @@ import {
 import {Avatar, AvatarFallback} from "@/components/ui/avatar";
 import {Button} from "@/components/ui/button";
 import Link from "next/link";
-import UpdateUser from "@/components/UpdateUser";
-import NewRendezVous from "@/components/NewRendezVous";
-import UpdateRendezVous from "@/components/UpdateRendezVous";
 import {useRouter} from "next/navigation";
 import AjoutDossierMedicalDialog from "@/components/AjoutDossierMedicalDialog";
 import AjoutSeuilPRDialog from "@/components/AjoutSeuilPRDialog";
-import {isAssetError} from "next/dist/client/route-loader";
 
 export default function Patient({params}) {
     const {id} = use(params);
@@ -140,46 +135,6 @@ export default function Patient({params}) {
 
     console.log(dmes)
 
-    const [error, setError]=useState("")
-
-    useEffect(() => {
-        const patientStr = sessionStorage.getItem('loggedInPatient'); // <-- ici sessionStorage
-        if (!patientStr) {
-            setError("Aucun patient connecté !");
-            return;
-        }
-
-        const patient = JSON.parse(patientStr);
-        const patientId = patient?.id_patient || patient?.id;
-
-        if (!patientId) {
-            setError("ID du patient non trouvé !");
-            return;
-        }
-
-        let client = null;
-        const socket = new SockJS('http://localhost:8090/ws');
-        client = Stomp.over(socket);
-
-        client.connect({}, (frame) => {
-            console.log("✅ WebSocket connecté (AlerteButton)");
-
-            client.subscribe(`/topic/alertes/patient/${patientId}`, (message) => {
-                const notification = message.body;
-                console.log("🔔 Alerte reçue (AlerteButton) : " + notification);
-                setNotifications(prev => [...prev, notification]);
-            });
-        }, (error) => {
-            console.error("❌ WebSocket erreur :", error);
-        });
-
-        return () => {
-            if (client && client.connected) {
-                console.log("🔌 Déconnexion WebSocket (AlerteButton)...");
-                client.disconnect(() => console.log("✅ Déconnecté"));
-            }
-        };
-    }, []);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
@@ -208,12 +163,12 @@ export default function Patient({params}) {
                             </p>
                         </div>
                     </div>
-                    <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-lg shadow-sm border">
-                            <Activity className="h-5 w-5 text-green-500"/>
-                            <span className="text-sm font-medium">Dossier actif</span>
-                        </div>
-                    </div>
+                    {/*<div className="flex items-center space-x-4">*/}
+                    {/*    <div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-lg shadow-sm border">*/}
+                    {/*        <Activity className="h-5 w-5 text-green-500"/>*/}
+                    {/*        <span className="text-sm font-medium">Dossier actif</span>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                 </div>
 
                 {/*<div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">*/}

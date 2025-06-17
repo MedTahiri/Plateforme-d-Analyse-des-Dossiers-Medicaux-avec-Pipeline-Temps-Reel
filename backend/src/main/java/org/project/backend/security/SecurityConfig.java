@@ -24,15 +24,15 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-//                        .requestMatchers("/api/dme/**").hasAnyRole("MEDECIN","ADMIN")
-//                        .requestMatchers("/api/medecins/**").hasAnyRole("ADMIN")
-//                        .requestMatchers("/api/patients/**").hasAnyRole("SECRETAIRE_MEDICAL","ADMIN")
-//                        .requestMatchers("/api/rendezvous/**").hasAnyRole("SECRETAIRE_MEDICAL","ADMIN")
-//                        .requestMatchers("/api/resultat/**").hasAnyRole("MEDECIN", "SECRETAIRE_MEDICAL", "PATIENT","ADMIN")
-//                        .requestMatchers("/api/secretaires/**").hasAnyRole("ADMIN")
-//                        .requestMatchers("/auth/login").permitAll()
-//                        .anyRequest().authenticated()
-                                .anyRequest().permitAll()
+                        .requestMatchers("/api/dme/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        .requestMatchers("/api/medecins/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        .requestMatchers("/api/patients/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        .requestMatchers("/api/rendezvous/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        .requestMatchers("/api/resultat/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        .requestMatchers("/api/secretaires/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        .requestMatchers("/auth/**").permitAll()
+                        .anyRequest().authenticated()
+                        // .anyRequest().permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable) // pas de page HTML de login
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS activé

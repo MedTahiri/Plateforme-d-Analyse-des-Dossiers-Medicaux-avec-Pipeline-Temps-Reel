@@ -43,7 +43,7 @@ export default function Login() {
                         <CardHeader>
                             <CardTitle className="text-2xl">Se connecter</CardTitle>
                             <CardDescription>
-                                Entrez votre email ci-dessous pour vous connecter à votre compte
+                                Entrez votre user name ci-dessous pour vous connecter à votre compte
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
@@ -63,7 +63,7 @@ export default function Login() {
                                             id="username"
                                             type="text"
                                             value={username}
-                                            placeholder="m@example.com"
+                                            placeholder="username"
                                             onChange={(e) => setUsername(e.target.value)}
                                             required
                                         />
