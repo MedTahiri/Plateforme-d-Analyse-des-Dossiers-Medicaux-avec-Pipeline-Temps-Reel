@@ -53,6 +53,7 @@ import UpdateRendezVous from "@/components/UpdateRendezVous";
 import {useRouter} from "next/navigation";
 import AjoutDossierMedicalDialog from "@/components/AjoutDossierMedicalDialog";
 import AjoutSeuilPRDialog from "@/components/AjoutSeuilPRDialog";
+import {isAssetError} from "next/dist/client/route-loader";
 
 export default function Patient({params}) {
     const {id} = use(params);
@@ -139,23 +140,65 @@ export default function Patient({params}) {
 
     console.log(dmes)
 
+    const [error, setError]=useState("")
+
+    useEffect(() => {
+        const patientStr = sessionStorage.getItem('loggedInPatient'); // <-- ici sessionStorage
+        if (!patientStr) {
+            setError("Aucun patient connecté !");
+            return;
+        }
+
+        const patient = JSON.parse(patientStr);
+        const patientId = patient?.id_patient || patient?.id;
+
+        if (!patientId) {
+            setError("ID du patient non trouvé !");
+            return;
+        }
+
+        let client = null;
+        const socket = new SockJS('http://localhost:8090/ws');
+        client = Stomp.over(socket);
+
+        client.connect({}, (frame) => {
+            console.log("✅ WebSocket connecté (AlerteButton)");
+
+            client.subscribe(`/topic/alertes/patient/${patientId}`, (message) => {
+                const notification = message.body;
+                console.log("🔔 Alerte reçue (AlerteButton) : " + notification);
+                setNotifications(prev => [...prev, notification]);
+            });
+        }, (error) => {
+            console.error("❌ WebSocket erreur :", error);
+        });
+
+        return () => {
+            if (client && client.connected) {
+                console.log("🔌 Déconnexion WebSocket (AlerteButton)...");
+                client.disconnect(() => console.log("✅ Déconnecté"));
+            }
+        };
+    }, []);
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
             <Header/>
             <main className="p-6 space-y-8">
                 {/* Header */}
+
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
-                        {role!=='ROLE_PATIENT' &&
-                        <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => router.back()}
-                            className="hover:bg-blue-50 hover:border-blue-300 transition-colors"
-                            aria-label="Retour"
-                        >
-                            <ArrowLeft className="h-4 w-4"/>
-                        </Button>}
+                        {role !== 'ROLE_PATIENT' &&
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => router.back()}
+                                className="hover:bg-blue-50 hover:border-blue-300 transition-colors"
+                                aria-label="Retour"
+                            >
+                                <ArrowLeft className="h-4 w-4"/>
+                            </Button>}
                         <div className="space-y-2">
                             <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                                 Dossier Patient
@@ -172,6 +215,11 @@ export default function Patient({params}) {
                         </div>
                     </div>
                 </div>
+
+                {/*<div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">*/}
+                {/*    ⚠️ Important: Your recent lab results are available.*/}
+                {/*</div>*/}
+
 
                 {/* Patient Info Card */}
                 <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
@@ -277,13 +325,13 @@ export default function Patient({params}) {
                                 <span>Dossier Médical</span>
                             </TabsTrigger>
 
-                                <TabsTrigger
-                                    value="seuil"
-                                    className="flex items-center justify-center space-x-2 data-[state=active]:bg-green-500 data-[state=active]:text-white rounded-lg transition-all duration-200 py-2"
-                                >
-                                    <FileText className="h-4 w-4"/>
-                                    <span>Seuil Personnalisé</span>
-                                </TabsTrigger>
+                            <TabsTrigger
+                                value="seuil"
+                                className="flex items-center justify-center space-x-2 data-[state=active]:bg-green-500 data-[state=active]:text-white rounded-lg transition-all duration-200 py-2"
+                            >
+                                <FileText className="h-4 w-4"/>
+                                <span>Seuil Personnalisé</span>
+                            </TabsTrigger>
 
                         </TabsList>
 
@@ -396,7 +444,9 @@ export default function Patient({params}) {
                                             Informations médicales et historique du patient
                                         </CardDescription>
                                     </div>
-                                    {role==='ROLE_MEDECIN' && <AjoutDossierMedicalDialog patient={patient} medecin={medecin} fetchData={fetchData()}/>}
+                                    {role === 'ROLE_MEDECIN' &&
+                                        <AjoutDossierMedicalDialog patient={patient} medecin={medecin}
+                                                                   fetchData={fetchData()}/>}
 
                                 </CardHeader>
                                 <CardContent className="p-0">
@@ -502,8 +552,8 @@ export default function Patient({params}) {
                                             Seuil personnalisé
                                         </CardDescription>
                                     </div>
-                                    {role==='ROLE_MEDECIN' &&
-                                    <AjoutSeuilPRDialog patient={patient} medecin={medecin} fetchData={fetchData}/>}
+                                    {role === 'ROLE_MEDECIN' &&
+                                        <AjoutSeuilPRDialog patient={patient} medecin={medecin} fetchData={fetchData}/>}
                                 </CardHeader>
                                 <CardContent className="p-0">
                                     <Table>
@@ -513,7 +563,8 @@ export default function Patient({params}) {
                                                     definition</TableHead>
                                                 <TableHead
                                                     className="py-4 text-gray-700 font-semibold">nom</TableHead>
-                                                <TableHead className="py-4 text-gray-700 font-semibold">unite</TableHead>
+                                                <TableHead
+                                                    className="py-4 text-gray-700 font-semibold">unite</TableHead>
                                                 <TableHead
                                                     className="py-4 text-gray-700 font-semibold">max Seuil</TableHead>
                                                 <TableHead
