@@ -31,6 +31,7 @@ public class PDFExtractionService {
     private static final Logger logger = LoggerFactory.getLogger(PDFExtractionService.class);
     private static final int MAX_ERRORS = 3;
 
+
     private final Path uploadDir = Paths.get("uploads").toAbsolutePath().normalize();
     private final PatientRepository patientRepo;
     private final DMERepository dmeRepo;

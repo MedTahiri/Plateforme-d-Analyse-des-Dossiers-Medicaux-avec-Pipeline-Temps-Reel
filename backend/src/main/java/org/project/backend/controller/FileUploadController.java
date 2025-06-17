@@ -19,6 +19,8 @@ import java.util.Map;
 @CrossOrigin("*") // Consider restricting this in production
 public class FileUploadController {
 
+
+
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     // Maximum file size (10MB)
