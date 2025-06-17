@@ -5,6 +5,8 @@ import {Button} from "@/components/ui/button";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 
+import { jsPDF } from "jspdf";
+
 export default function NewUser({role, refreshData}) {
 
     const [username,setusername] = useState("")
@@ -18,6 +20,18 @@ export default function NewUser({role, refreshData}) {
 
     const saveUser = () => {
         createUser(username,password,name, prenom, dateNaissance, role).then(() => {
+            const doc = new jsPDF();
+
+            doc.setFontSize(16);
+            doc.text(`${role} Information`, 20, 20);
+            doc.setFontSize(12);
+            doc.text(`UserName: ${username}`, 20, 40);
+            doc.text(`Password: ${password}`, 20, 50);
+            doc.text(`Nom: ${name}`, 20, 60);
+            doc.text(`Prenom: ${prenom}`, 20, 70);
+            doc.text(`Date Naissance: ${dateNaissance}`, 20, 80);
+
+            doc.save(`${username}-info.pdf`);
             setusername("")
             setpassword("")
             setname("");
