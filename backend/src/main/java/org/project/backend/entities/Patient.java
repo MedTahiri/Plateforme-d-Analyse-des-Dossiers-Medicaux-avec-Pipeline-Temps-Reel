@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -31,6 +33,8 @@ public class Patient extends Utilisateur {
     public Patient(){
         role=Role.PATIENT;
     }
+
+
 }
 
 

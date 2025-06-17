@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -31,11 +32,17 @@ public abstract class Utilisateur {
     private String prenom;
 
     @Temporal(TemporalType.DATE)
-    private Date dateNaissance;
+    private LocalDate dateNaissance;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Enumerated(EnumType.STRING)
     protected Role role;
+
+    public void setDate_naissance(LocalDate dob) {
+        this.dateNaissance=dob;
+    }
+
+
 }
 
 

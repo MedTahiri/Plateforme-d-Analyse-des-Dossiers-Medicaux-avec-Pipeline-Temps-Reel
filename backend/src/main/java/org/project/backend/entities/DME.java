@@ -38,4 +38,9 @@ public class DME {
     )
     private List<Medecin> medecins;
 
+    public void setDate_creation(LocalDate now) {
+        this.dateCreation=now;
+    }
+
+
 }
