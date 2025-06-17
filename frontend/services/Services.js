@@ -290,11 +290,45 @@ export const ajouteDme = async (file, patient, medecins) => {
     }
 };
 
-export const deleteDme = async (id) =>{
+export const deleteDme = async (id) => {
     try {
         const response = await axios.delete(`${url}/api/dme/${id}`, {withCredentials: true})
         return response
-    }catch (error){
+    } catch (error) {
+        console.log("error in delete dme " + error)
+    }
+}
+
+export const ajouteSeuil = async (nom,unite,seuilMax,seuiMin,patient,medcin) => {
+
+    const indicateur = {
+        nom,unite
+    }
+
+    const seuilPR = {
+        seuilMax,
+        seuiMin,
+        dateDefinition:new Date().toISOString().split('T')[0],
+        indicateur,
+        medcin,
+        patient
+    }
+
+    console.log(seuilPR)
+
+    try {
+        const response = await axios.post(`${url}/api/medecins/seuil`,seuilPR, {withCredentials: true})
+        return response
+    } catch (error) {
+        console.log("error in ajouteSeuil dme " + error)
+    }
+}
+
+export const getAllseuilByPatient = async (id)=>{
+    try {
+        const response = await axios.get(`${url}/api/medecins/seuil/${id}`, {withCredentials: true})
+        return response
+    } catch (error) {
         console.log("error in delete dme " + error)
     }
 }

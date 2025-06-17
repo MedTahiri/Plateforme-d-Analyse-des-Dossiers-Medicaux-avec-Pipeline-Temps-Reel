@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import {useState} from "react"
 import {
     Dialog,
     DialogContent,
@@ -9,12 +9,12 @@ import {
     DialogTrigger,
     DialogFooter,
 } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { addSeuilPR } from "@/services/Services"
+import {Button} from "@/components/ui/button"
+import {Input} from "@/components/ui/input"
+import {Label} from "@/components/ui/label"
+import {addSeuilPR, ajouteSeuil} from "@/services/Services"
 
-export default function AjoutSeuilPRDialog({ patient }) {
+export default function AjoutSeuilPRDialog({patient, medecin, fetchData}) {
     const [form, setForm] = useState({
         nom: "",
         unite: "",
@@ -24,8 +24,8 @@ export default function AjoutSeuilPRDialog({ patient }) {
     const [open, setOpen] = useState(false)
 
     const handleChange = (e) => {
-        const { name, value } = e.target
-        setForm((prev) => ({ ...prev, [name]: value }))
+        const {name, value} = e.target
+        setForm((prev) => ({...prev, [name]: value}))
     }
 
     const handleSubmit = async () => {
@@ -34,7 +34,7 @@ export default function AjoutSeuilPRDialog({ patient }) {
                 ...form,
                 patientId: patient?.id,
             }
-            //await addSeuilPR(payload)
+            ajouteSeuil(form.nom, form.unite, form.seuilMin, form.seuilMax, patient, medecin).then((data) => fetchData()).catch(console.error)
             setOpen(false)
         } catch (e) {
             console.error(e)
@@ -55,20 +55,20 @@ export default function AjoutSeuilPRDialog({ patient }) {
                 <div className="space-y-4">
                     <div>
                         <Label>Nom</Label>
-                        <Input name="nom" value={form.nom} onChange={handleChange} />
+                        <Input name="nom" value={form.nom} onChange={handleChange}/>
                     </div>
                     <div>
                         <Label>Unité</Label>
-                        <Input name="unite" value={form.unite} onChange={handleChange} />
+                        <Input name="unite" value={form.unite} onChange={handleChange}/>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <Label>Seuil Min</Label>
-                            <Input type="number" name="seuilMin" value={form.seuilMin} onChange={handleChange} />
+                            <Input type="number" name="seuilMin" value={form.seuilMin} onChange={handleChange}/>
                         </div>
                         <div>
                             <Label>Seuil Max</Label>
-                            <Input type="number" name="seuilMax" value={form.seuilMax} onChange={handleChange} />
+                            <Input type="number" name="seuilMax" value={form.seuilMax} onChange={handleChange}/>
                         </div>
                     </div>
                 </div>

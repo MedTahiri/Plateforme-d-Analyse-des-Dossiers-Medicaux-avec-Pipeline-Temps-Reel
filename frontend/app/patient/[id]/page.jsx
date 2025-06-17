@@ -5,7 +5,7 @@ import {Header} from "@/components/header";
 import {
     deleteDme,
     deleteRendezVous,
-    getAllPatients, getDmeByPatient,
+    getAllPatients, getAllseuilByPatient, getDmeByPatient,
     getRendezVousByPatient,
     getUser, me,
 } from "@/services/Services";
@@ -62,6 +62,7 @@ export default function Patient({params}) {
     const [rendezVous, setRendezVous] = useState([]);
     const [dmes, setDmes] = useState([])
     const [Loading,setLoading] = useState(false)
+    const [seuils,setSeuils] = useState([])
 
     const router = useRouter();
 
@@ -75,6 +76,9 @@ export default function Patient({params}) {
         getDmeByPatient(id)
             .then((data) => setDmes(data?.data || []))
             .catch(console.error)
+        getAllseuilByPatient(id)
+            .then((data)=>setSeuils(data?.data||[]))
+            .catch(console.error)
     };
 
     useEffect(() => {
@@ -86,8 +90,6 @@ export default function Patient({params}) {
             .catch(console.error)
             .finally(() => setLoading(false));
     }, []);
-
-    console.log()
 
     useEffect(() => {
         fetchData();
@@ -393,7 +395,7 @@ export default function Patient({params}) {
                                             Informations médicales et historique du patient
                                         </CardDescription>
                                     </div>
-                                    {role==='ROLE_MEDECIN' && <AjoutDossierMedicalDialog patient={patient}/>}
+                                    {role==='ROLE_MEDECIN' && <AjoutDossierMedicalDialog patient={patient} medecin={medecin} fetchData={fetchData()}/>}
 
                                 </CardHeader>
                                 <CardContent className="p-0">
@@ -500,31 +502,33 @@ export default function Patient({params}) {
                                             Seuil personnalisé
                                         </CardDescription>
                                     </div>
-                                    <AjoutSeuilPRDialog patient={patient}/>
+                                    <AjoutSeuilPRDialog patient={patient} medecin={medecin} fetchData={fetchData}/>
                                 </CardHeader>
                                 <CardContent className="p-0">
                                     <Table>
                                         <TableHeader>
                                             <TableRow className="border-b border-gray-100">
                                                 <TableHead className="py-4 text-gray-700 font-semibold">Date & Heure de
-                                                    creation</TableHead>
+                                                    definition</TableHead>
                                                 <TableHead
-                                                    className="py-4 text-gray-700 font-semibold">Médecin</TableHead>
-                                                <TableHead className="py-4 text-gray-700 font-semibold">Url</TableHead>
+                                                    className="py-4 text-gray-700 font-semibold">nom</TableHead>
+                                                <TableHead className="py-4 text-gray-700 font-semibold">unite</TableHead>
                                                 <TableHead
-                                                    className="py-4 text-gray-700 font-semibold">Supprimer</TableHead>
+                                                    className="py-4 text-gray-700 font-semibold">max Seuil</TableHead>
+                                                <TableHead
+                                                    className="py-4 text-gray-700 font-semibold">min Seuil</TableHead>
 
                                             </TableRow>
                                         </TableHeader>
                                         <TableBody>
-                                            {dmes.length > 0 ? (
-                                                dmes.map((item) => (
+                                            {seuils.length > 0 ? (
+                                                seuils.map((item) => (
                                                     <TableRow key={item?.id}
                                                               className="hover:bg-blue-50/50 transition-colors border-b border-gray-50">
                                                         <TableCell className="py-4">
                                                             <div className="space-y-1">
                                                                 <p className="font-medium text-gray-800">
-                                                                    {new Date(item?.dateCreation).toLocaleDateString("fr-FR", {
+                                                                    {new Date(item?.dateDefinition).toLocaleDateString("fr-FR", {
                                                                         weekday: "long",
                                                                         year: "numeric",
                                                                         month: "long",
@@ -532,7 +536,7 @@ export default function Patient({params}) {
                                                                     })}
                                                                 </p>
                                                                 <p className="text-sm text-gray-500">
-                                                                    {new Date(item?.dateCreation).toLocaleTimeString("fr-FR", {
+                                                                    {new Date(item?.dateDefinition).toLocaleTimeString("fr-FR", {
                                                                         hour: "2-digit",
                                                                         minute: "2-digit",
                                                                     })}
@@ -544,36 +548,37 @@ export default function Patient({params}) {
                                                                 <Avatar className="h-8 w-8 ring-2 ring-green-100">
                                                                     <AvatarFallback
                                                                         className="bg-gradient-to-r from-green-500 to-green-600 text-white font-semibold text-sm">
-                                                                        {item?.medecins[0]?.prenom?.[0]}{item?.medecins[0]?.name?.[0]}
+                                                                        {item?.indicateur?.nom[0]}
                                                                     </AvatarFallback>
                                                                 </Avatar>
                                                                 <div>
                                                                     <p className="font-medium text-gray-800">
-                                                                        Dr. {item?.medecins[0]?.prenom} {item?.medecins[0]?.name}
+                                                                        {item?.indicateur?.nom}
                                                                     </p>
-                                                                    <div
-                                                                        className="flex items-center space-x-1 text-xs text-gray-500">
-                                                                        <Stethoscope className="h-3 w-3"/>
-                                                                        <span>Médecin</span>
-                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </TableCell>
                                                         <TableCell className="py-4">
-                                                            <Link
-                                                                href={`http://localhost:8686/api/dme/file/${item?.url}`}
-                                                                target="_blank"
-                                                                rel="noopener noreferrer"
-                                                            >
-  <span className={`px-3 py-1 rounded-full text-xs font-medium border ${getStatusBadgeColor(item?.status)}`}>
-    {item?.url}
-  </span>
-                                                            </Link>
+                                                            <div>
+                                                                <p className="font-medium text-gray-800">
+                                                                    {item?.indicateur?.unite}
+                                                                </p>
+                                                            </div>
 
                                                         </TableCell>
                                                         <TableCell className="py-4">
-                                                            <Button variant="outline"
-                                                                    onClick={() => deletedmebyid(item?.id)}>Supprimer</Button>
+                                                            <div>
+                                                                <p className="font-medium text-gray-800">
+                                                                    {item?.seuilMax}
+                                                                </p>
+                                                            </div>
+                                                        </TableCell>
+                                                        <TableCell className="py-4">
+                                                            <div>
+                                                                <p className="font-medium text-gray-800">
+                                                                    {item?.seuiMin}
+                                                                </p>
+                                                            </div>
                                                         </TableCell>
                                                     </TableRow>
                                                 ))

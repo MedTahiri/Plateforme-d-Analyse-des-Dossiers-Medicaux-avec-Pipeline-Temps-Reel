@@ -15,21 +15,10 @@ import { Label } from "@/components/ui/label";
 import { ajouteDme, me } from "@/services/Services";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function AjoutDossierMedicalDialog({ patient }) {
+export default function AjoutDossierMedicalDialog({ patient,medecin,fetchData }) {
     const [file, setFile] = useState(null);
-    const [medecin, setMedecin] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState(false);
     const [submitting, setSubmitting] = useState(false);
-
-    useEffect(() => {
-        me()
-            .then((data) => {
-                setMedecin(data?.data?.user);
-            })
-            .catch(console.error)
-            .finally(() => setLoading(false));
-    }, []);
 
     const handleFileChange = (e) => {
         if (e.target.files?.length > 0) {
@@ -52,15 +41,6 @@ export default function AjoutDossierMedicalDialog({ patient }) {
             setSubmitting(false);
         }
     };
-
-    if (loading) {
-        return (
-            <div className="p-4 space-y-4">
-                <Skeleton className="h-6 w-1/3" />
-                <Skeleton className="h-16 w-full" />
-            </div>
-        );
-    }
 
     if (!medecin) {
         return (

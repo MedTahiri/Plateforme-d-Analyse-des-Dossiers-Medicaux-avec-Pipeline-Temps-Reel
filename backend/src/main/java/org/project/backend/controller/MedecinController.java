@@ -40,6 +40,7 @@ public class MedecinController {
     public SeuilPR ajouterSeuil(@RequestBody SeuilPR seuilPR){
         return medecinService.addSeuil(seuilPR);
     }
+
     @DeleteMapping("/{id}")
     public boolean deleteMedecin(@PathVariable Long id) {
         return medecinService.deleteMedecin(id);
