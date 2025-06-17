@@ -26,21 +26,53 @@ public class MedecinService {
     public List<SeuilPR> getAllSeuilbypatient(Long patient_id){
         return seuilPRJpa.findByPatientId(patient_id);
     }
+//    public SeuilPR addSeuil(SeuilPR seuilPR){
+//        if(seuilPRJpa.findSeuilPRByIndicateurAndPatientAndMedcin( seuilPR.getIndicateur(),  seuilPR.getPatient() ,  seuilPR.getMedcin()) == null){
+//            indicateurJPA.save(seuilPR.getIndicateur());
+//            return  seuilPRJpa.save(seuilPR);
+//
+//        }
+//        else {
+//            SeuilPR seuilPR1 = seuilPRJpa.findSeuilPRByIndicateurAndPatientAndMedcin( seuilPR.getIndicateur(),  seuilPR.getPatient() ,  seuilPR.getMedcin());
+//            seuilPR1.setSeuilMax(seuilPR.getSeuilMax());
+//            seuilPR1.setSeuiMin(seuilPR.getSeuiMin());
+//            seuilPR1.setDateDefinition(seuilPR.getDateDefinition());
+//            return seuilPRJpa.save(seuilPR1);
+//
+//        }
+//    }
+
     public SeuilPR addSeuil(SeuilPR seuilPR){
-        if(seuilPRJpa.findSeuilPRByIndicateurAndPatientAndMedcin( seuilPR.getIndicateur(),  seuilPR.getPatient() ,  seuilPR.getMedcin()) == null){
-            indicateurJPA.save(seuilPR.getIndicateur());
-            return  seuilPRJpa.save(seuilPR);
+        Indicateur indicateur = seuilPR.getIndicateur();
 
+        // Vérifie s'il existe déjà un indicateur avec ce nom et cette unité
+        Indicateur existingIndicateur = indicateurJPA.findByNomAndUnite(
+                indicateur.getNom(), indicateur.getUnite()
+        );
+
+        if (existingIndicateur == null) {
+            // Pas trouvé, donc on le sauvegarde
+            existingIndicateur = indicateurJPA.save(indicateur);
         }
-        else {
-            SeuilPR seuilPR1 = seuilPRJpa.findSeuilPRByIndicateurAndPatientAndMedcin( seuilPR.getIndicateur(),  seuilPR.getPatient() ,  seuilPR.getMedcin());
-            seuilPR1.setSeuilMax(seuilPR.getSeuilMax());
-            seuilPR1.setSeuiMin(seuilPR.getSeuiMin());
-            seuilPR1.setDateDefinition(seuilPR.getDateDefinition());
-            return seuilPRJpa.save(seuilPR1);
 
+        // Assure-toi que SeuilPR utilise une entité persistée
+        seuilPR.setIndicateur(existingIndicateur);
+
+        // Chercher si un SeuilPR existe déjà pour le triplet
+        SeuilPR existing = seuilPRJpa.findSeuilPRByIndicateurAndPatientAndMedcin(
+                existingIndicateur, seuilPR.getPatient(), seuilPR.getMedcin()
+        );
+
+        if (existing == null) {
+            return seuilPRJpa.save(seuilPR);
+        } else {
+            existing.setSeuilMax(seuilPR.getSeuilMax());
+            existing.setSeuiMin(seuilPR.getSeuiMin());
+            existing.setDateDefinition(seuilPR.getDateDefinition());
+            return seuilPRJpa.save(existing);
         }
     }
+
 
     public List<Medecin> getAllMedecin(){
         return medecinRepository.findAll();

@@ -14,7 +14,6 @@ export function Header() {
       logout().then(res=> {
               if (res.status=200){
                   router.push("/login")
-                  Cookies.delete("JSESSIONID")
               }
           }
       )

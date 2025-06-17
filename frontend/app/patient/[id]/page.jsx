@@ -146,6 +146,7 @@ export default function Patient({params}) {
                 {/* Header */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
+                        {role!=='ROLE_PATIENT' &&
                         <Button
                             variant="outline"
                             size="sm"
@@ -154,7 +155,7 @@ export default function Patient({params}) {
                             aria-label="Retour"
                         >
                             <ArrowLeft className="h-4 w-4"/>
-                        </Button>
+                        </Button>}
                         <div className="space-y-2">
                             <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                                 Dossier Patient
@@ -275,15 +276,15 @@ export default function Patient({params}) {
                                 <FileText className="h-4 w-4"/>
                                 <span>Dossier Médical</span>
                             </TabsTrigger>
-                            {role==='ROLE_MEDECIN' &&
+
                                 <TabsTrigger
                                     value="seuil"
                                     className="flex items-center justify-center space-x-2 data-[state=active]:bg-green-500 data-[state=active]:text-white rounded-lg transition-all duration-200 py-2"
                                 >
                                     <FileText className="h-4 w-4"/>
-                                    <span>Seuil personnalisé</span>
+                                    <span>Seuil Personnalisé</span>
                                 </TabsTrigger>
-                            }
+
                         </TabsList>
 
                         <TabsContent value="rendez-vous" className="mt-6">
@@ -488,7 +489,6 @@ export default function Patient({params}) {
                                 </CardContent>
                             </Card>
                         </TabsContent>
-                        {role==='ROLE_MEDECIN' &&
                         <TabsContent value="seuil" className="mt-6">
                             <Card className="border-0 shadow-xl bg-white/80 backdrop-blur-sm">
                                 <CardHeader className="border-b border-gray-100 pb-6">
@@ -502,7 +502,8 @@ export default function Patient({params}) {
                                             Seuil personnalisé
                                         </CardDescription>
                                     </div>
-                                    <AjoutSeuilPRDialog patient={patient} medecin={medecin} fetchData={fetchData}/>
+                                    {role==='ROLE_MEDECIN' &&
+                                    <AjoutSeuilPRDialog patient={patient} medecin={medecin} fetchData={fetchData}/>}
                                 </CardHeader>
                                 <CardContent className="p-0">
                                     <Table>
@@ -597,7 +598,6 @@ export default function Patient({params}) {
                                 </CardContent>
                             </Card>
                         </TabsContent>
-                        }
                     </Tabs>
                 </div>
             </main>

@@ -12,6 +12,7 @@ import {useRouter} from "next/navigation";
 
 export default function Home() {
     const [role, setRole] = useState()
+    const [user,setUser] = useState()
     const [loading, setLoading] = useState(true)
 
     const router = useRouter()
@@ -19,15 +20,20 @@ export default function Home() {
     useEffect(() => {
         me()
             .then(data => {
-                setRole(data?.data.role)
+                setRole(data?.data?.role)
+                setUser(data?.data?.user)
             })
             .catch(console.error)
             .finally(() => setLoading(false))
     }, [])
+    console.log(user)
 
     useEffect(() => {
         if (!loading && !role) {
             router.push("/login")
+        }
+        if (role==="ROLE_PATIENT"){
+            router.push("/patient/"+user?.id)
         }
     }, [loading, role, router])
 

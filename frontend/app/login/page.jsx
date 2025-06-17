@@ -28,6 +28,7 @@ export default function Login() {
       e.preventDefault()
         login({username, password}).then(res => {
                 if (res.status === 200) {
+                    console.log(res)
                     router.push("/")
                 }
 
