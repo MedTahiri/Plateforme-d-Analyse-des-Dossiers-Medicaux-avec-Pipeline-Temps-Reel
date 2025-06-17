@@ -157,10 +157,10 @@ export default function Medecin() {
               </p>
             </div>
             <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-lg shadow-sm border">
-                <Activity className="h-5 w-5 text-green-500" />
-                <span className="text-sm font-medium">Système actif</span>
-              </div>
+              {/*<div className="flex items-center space-x-2 px-4 py-2 bg-white rounded-lg shadow-sm border">*/}
+              {/*  <Activity className="h-5 w-5 text-green-500" />*/}
+              {/*  <span className="text-sm font-medium">Système actif</span>*/}
+              {/*</div>*/}
               {currentMedecin && (
                   <div className="flex items-center space-x-3 px-4 py-2 bg-white rounded-lg shadow-sm border">
                     <Avatar className="h-8 w-8 ring-2 ring-blue-100">
