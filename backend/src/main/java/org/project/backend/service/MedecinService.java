@@ -4,6 +4,7 @@ import org.project.backend.entities.Indicateur;
 import org.project.backend.entities.Medecin;
 import org.project.backend.entities.Patient;
 import org.project.backend.entities.SeuilPR;
+import org.project.backend.repository.IndicateurJPA;
 import org.project.backend.repository.MedecinRepository;
 import org.project.backend.repository.SeuilPR_JPA;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +21,14 @@ public class MedecinService {
     private MedecinRepository medecinRepository;
     @Autowired
     private SeuilPR_JPA seuilPRJpa;
+    @Autowired
+    private IndicateurJPA indicateurJPA;
     public List<SeuilPR> getAllSeuilbypatient(Long patient_id){
         return seuilPRJpa.findByPatientId(patient_id);
     }
     public SeuilPR addSeuil(SeuilPR seuilPR){
         if(seuilPRJpa.findSeuilPRByIndicateurAndPatientAndMedcin( seuilPR.getIndicateur(),  seuilPR.getPatient() ,  seuilPR.getMedcin()) == null){
+            indicateurJPA.save(seuilPR.getIndicateur());
             return  seuilPRJpa.save(seuilPR);
 
         }
