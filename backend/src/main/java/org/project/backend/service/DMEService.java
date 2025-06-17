@@ -1,10 +1,13 @@
 package org.project.backend.service;
 
 import org.project.backend.entities.DME;
+import org.project.backend.entities.Patient;
 import org.project.backend.repository.DMERepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -54,5 +57,16 @@ public class DMEService {
             return true;
         }
         return false;
+    }
+
+    public DME ajouteDme(DME dme, String fileName) {
+        DME dmeAjoute = dme;
+        dmeAjoute.setDateCreation(LocalDate.now());
+        dme.setUrl(fileName);
+        return dmeRepository.save(dmeAjoute);
+    }
+
+    public List<DME> getDmeByPatient(Long patientId) {
+        return dmeRepository.findDMESByPatient_Id(patientId);
     }
 }

@@ -125,7 +125,7 @@ export const deleteRendezVous = async (id) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return { success: true, message: 'Rendez-vous supprimé avec succès' };
+        return {success: true, message: 'Rendez-vous supprimé avec succès'};
     } catch (error) {
         console.error('Error deleting rendez-vous:', error);
         throw error;
@@ -146,7 +146,7 @@ export const createRendezVous = async (rendezVousData) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return { success: true, message: 'Rendez-vous créé avec succès' };
+        return {success: true, message: 'Rendez-vous créé avec succès'};
     } catch (error) {
         console.error('Error creating rendez-vous:', error);
         throw error;
@@ -186,7 +186,7 @@ export const updateRendezVous = async (id, rendezVousData) => {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        return { success: true, message: 'Rendez-vous mis à jour avec succès' };
+        return {success: true, message: 'Rendez-vous mis à jour avec succès'};
     } catch (error) {
         console.error('Error updating rendez-vous:', error);
         throw error;
@@ -215,7 +215,7 @@ export const getRendezVousByPatient = async (patientId) => {
 export const annulerRendezVous = async (id) => {
     try {
         const response = await axios.put(`${url}/api/rendezvous/annuler/${id}`, {}, {withCredentials: true});
-        return { success: true, message: 'Rendez-vous annulé avec succès', data: response.data };
+        return {success: true, message: 'Rendez-vous annulé avec succès', data: response.data};
     } catch (error) {
         console.error('Error cancelling rendez-vous:', error);
         throw error;
@@ -225,9 +225,76 @@ export const annulerRendezVous = async (id) => {
 export const terminerRendezVous = async (id) => {
     try {
         const response = await axios.put(`${url}/api/rendezvous/terminer/${id}`, {}, {withCredentials: true});
-        return { success: true, message: 'Rendez-vous terminé avec succès', data: response.data };
+        return {success: true, message: 'Rendez-vous terminé avec succès', data: response.data};
     } catch (error) {
         console.error('Error completing rendez-vous:', error);
         throw error;
     }
 };
+
+
+// export const ajouteDme = async (file,patient,medecins) =>{
+//     const dme = {
+//         dateCreation : "",
+//         patient : patient,
+//         resultatList : [],
+//         url : "",
+//         medecins : [medecins]
+//     }
+//     try {
+//         const response = await axios.post(`${url}/api/dme`,{dme},{withCredentials: true})
+//         return response
+//     }
+//     catch (error) {
+//         console.error('Error creation dme: ', error);
+//         throw error;
+//     }
+// }
+
+export const getDmeByPatient = async (id) => {
+    try {
+        const response = await axios.get(`${url}/api/dme/by-patient/${id}`, {withCredentials: true})
+        return response
+    } catch (error) {
+        console.log("get dme by patient : " + error)
+    }
+}
+
+export const ajouteDme = async (file, patient, medecins) => {
+    const dme = {
+        dateCreation: new Date().toISOString().split("T")[0], // or "" if your backend sets it
+        patient: patient,
+        resultatList: [],
+        url: "", // optional, can be set by server
+        medecins: [medecins],
+    };
+
+    console.log(dme)
+
+    const formData = new FormData();
+    formData.append("file", file); // your File object from input
+    formData.append(
+        "dme",
+        new Blob([JSON.stringify(dme)], {type: "application/json"})
+    );
+
+    try {
+        const response = await axios.post(`${url}/api/dme`, formData, {
+            headers: {"Content-Type": "multipart/form-data"},
+            withCredentials: true,
+        });
+        return response;
+    } catch (error) {
+        console.error("Error creation dme:", error);
+        throw error;
+    }
+};
+
+export const deleteDme = async (id) =>{
+    try {
+        const response = await axios.delete(`${url}/api/dme/${id}`, {withCredentials: true})
+        return response
+    }catch (error){
+        console.log("error in delete dme " + error)
+    }
+}
