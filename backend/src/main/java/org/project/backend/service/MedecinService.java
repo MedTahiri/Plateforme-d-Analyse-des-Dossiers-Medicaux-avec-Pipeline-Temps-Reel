@@ -125,4 +125,8 @@ public class MedecinService {
     public Object getMedecinByUsername(String username) {
         return medecinRepository.getMedecinByUsername(username);
     }
+
+    public Medecin exist(Long id){
+        return medecinRepository.findById(id).orElse(null);
+    }
 }

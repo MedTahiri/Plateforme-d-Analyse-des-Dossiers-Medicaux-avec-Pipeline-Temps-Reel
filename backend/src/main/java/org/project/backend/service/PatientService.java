@@ -96,4 +96,8 @@ public class PatientService {
     public Object getPatientByUsername(String username) {
         return patientRepository.getPatientByUsername(username);
     }
+
+    public Patient exist(Long id){
+        return patientRepository.findById(id).orElse(null);
+    }
 }

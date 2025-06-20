@@ -28,7 +28,7 @@ export default function Login() {
       e.preventDefault()
         login({username, password}).then(res => {
                 if (res.status === 200) {
-                    console.log(res)
+                    sessionStorage.setItem('loggedInUser', JSON.stringify(res?.data));
                     router.push("/")
                 }
 

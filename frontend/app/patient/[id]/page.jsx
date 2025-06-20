@@ -49,6 +49,12 @@ import Link from "next/link";
 import {useRouter} from "next/navigation";
 import AjoutDossierMedicalDialog from "@/components/AjoutDossierMedicalDialog";
 import AjoutSeuilPRDialog from "@/components/AjoutSeuilPRDialog";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Bell, AlertTriangle } from "lucide-react"
+import SockJS from 'sockjs-client';
+import Stomp from 'stompjs';
+import {formatAlerteMessage} from "@/services/util";
 
 export default function Patient({params}) {
     const {id} = use(params);
@@ -57,9 +63,10 @@ export default function Patient({params}) {
     const [role, setRole] = useState(null)
     const [rendezVous, setRendezVous] = useState([]);
     const [dmes, setDmes] = useState([])
-    const [Loading,setLoading] = useState(false)
-    const [seuils,setSeuils] = useState([])
-
+    const [Loading, setLoading] = useState(false)
+    const [seuils, setSeuils] = useState([])
+    const [error,setError] = useState()
+    const [notifications, setNotifications] = useState([]);
     const router = useRouter();
 
     const fetchData = () => {
@@ -73,7 +80,7 @@ export default function Patient({params}) {
             .then((data) => setDmes(data?.data || []))
             .catch(console.error)
         getAllseuilByPatient(id)
-            .then((data)=>setSeuils(data?.data||[]))
+            .then((data) => setSeuils(data?.data || []))
             .catch(console.error)
     };
 
@@ -90,6 +97,48 @@ export default function Patient({params}) {
     useEffect(() => {
         fetchData();
     }, [id]);
+
+    useEffect(() => {
+        const patientStr = sessionStorage.getItem('loggedInUser'); // <-- ici sessionStorage
+        if (!patientStr) {
+            setError("Aucun patient connecté !");
+            return;
+        }
+
+        const patient = JSON.parse(patientStr);
+        if (patient?.role==="ROLE_PATIENT") {
+            const patientId = patient?.user?.id || patient?.user?.id;
+
+            if (!patientId) {
+                setError("ID du patient non trouvé !");
+                return;
+            }
+
+            let client = null;
+            const socket = new SockJS('http://localhost:8686/ws');
+            client = Stomp.over(socket);
+
+            client.connect({}, (frame) => {
+                console.log("✅ WebSocket connecté (AlerteButton)");
+
+                client.subscribe(`/topic/alertes/patient/${patientId}`, (message) => {
+                    const notification = message.body;
+                    console.log("🔔 Alerte reçue (AlerteButton) : " + notification);
+                    setNotifications(prev => [...prev, notification]);
+                });
+            }, (error) => {
+                console.error("❌ WebSocket erreur :", error);
+            });
+
+            return () => {
+                if (client && client.connected) {
+                    console.log("🔌 Déconnexion WebSocket (AlerteButton)...");
+                    client.disconnect(() => console.log("✅ Déconnecté"));
+                }
+            };
+        }
+    }, []);
+
 
     const deleterendezvous = (id) => {
         deleteRendezVous(id)
@@ -171,9 +220,7 @@ export default function Patient({params}) {
                     {/*</div>*/}
                 </div>
 
-                {/*<div className="bg-red-100 text-red-800 p-3 rounded-md mb-4">*/}
-                {/*    ⚠️ Important: Your recent lab results are available.*/}
-                {/*</div>*/}
+
 
 
                 {/* Patient Info Card */}
@@ -220,6 +267,31 @@ export default function Patient({params}) {
                         </div>
                     </CardContent>
                 </Card>
+
+                {notifications.length > 0 && (
+                    <Alert variant="default" className="bg-yellow-100/80 border-yellow-300 text-yellow-900 mt-6">
+                        <AlertTitle className="flex items-center space-x-2">
+                            <Bell className="w-5 h-5 text-yellow-600" />
+                            <span>Alertes reçues en temps réel</span>
+                        </AlertTitle>
+                        <AlertDescription>
+                            <ScrollArea className="h-32 pr-2">
+                                <ul className="space-y-2 mt-2">
+                                    {notifications.map((notif, idx) => (
+                                        <li
+                                            key={idx}
+                                            className="flex items-start space-x-2 bg-white border rounded-md p-2 text-sm shadow-sm text-gray-800"
+                                        >
+                                            <AlertTriangle className="w-4 h-4 mt-0.5 text-red-500" />
+                                            <span>{formatAlerteMessage(notif)}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </ScrollArea>
+                        </AlertDescription>
+                    </Alert>
+                )}
+
 
                 {/* Stats Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

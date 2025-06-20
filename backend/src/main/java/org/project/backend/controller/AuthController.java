@@ -59,7 +59,34 @@ public class AuthController {
         HttpSession session = httpServletRequest.getSession(true);
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
 
-        return ResponseEntity.ok("Login successful");
+        String username = authentication.getName();
+        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+
+        Object user = null;
+        String matchedRole = null;
+
+        if (hasRole(authorities, "ROLE_ADMIN")) {
+            user = adminService.getAdminByUsername(username);
+            matchedRole = "ROLE_ADMIN";
+        } else if (hasRole(authorities, "ROLE_PATIENT")) {
+            user = patientService.getPatientByUsername(username);
+            matchedRole = "ROLE_PATIENT";
+        } else if (hasRole(authorities, "ROLE_MEDECIN")) {
+            user = medecinService.getMedecinByUsername(username);
+            matchedRole = "ROLE_MEDECIN";
+        } else if (hasRole(authorities, "ROLE_SECRETAIRE_MEDICAL")) {
+            user = secretaireMedicalService.getSecretaireMedicalByUsername(username);
+            matchedRole = "ROLE_SECRETAIRE_MEDICAL";
+        }
+
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("User role not recognized");
+        }
+
+        return ResponseEntity.ok(Map.of(
+                "role", matchedRole,
+                "user", user
+        ));
     }
     @GetMapping("/me")
     public ResponseEntity<?> me() {

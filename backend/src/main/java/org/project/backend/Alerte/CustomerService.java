@@ -49,9 +49,9 @@ public class CustomerService {
         AlerteDTO alerteDTO = objectMapper.readValue(message, AlerteDTO.class);
         String alerte ="📩 Message reçu : "+alerteDTO.toString()+" son id : "+id +" cote medcin ";
         System.out.println(alerte);
-//        Medecin medcin = medcinService.exist(Long.valueOf(id));
-//        if (medcin!=null)
-//            notificationService.notification(medcin,"medcin",medcin.getId().toString(),alerte);
+        Medecin medcin = medcinService.exist(Long.valueOf(id));
+        if (medcin!=null)
+            notificationService.notification(medcin,"medcin",medcin.getId().toString(),alerte);
 
 
 
@@ -62,9 +62,9 @@ public class CustomerService {
         AlerteDTO alerteDTO = objectMapper.readValue(message, AlerteDTO.class);
         String alerte = "📩 Message reçu : "+alerteDTO.toString()+" son id : "+id +" cote patient ";
         System.out.println(alerte);
-//        Patient patient = patientService.exist(Long.valueOf(id));
-//        if (patient!=null)
-//            notificationService.notification(patient,"patient",patient.getId().toString(),alerteDTO.toString());
+        Patient patient = patientService.exist(Long.valueOf(id));
+        if (patient!=null)
+            notificationService.notification(patient,"patient",patient.getId().toString(),alerteDTO.toString());
 
     }
 }
