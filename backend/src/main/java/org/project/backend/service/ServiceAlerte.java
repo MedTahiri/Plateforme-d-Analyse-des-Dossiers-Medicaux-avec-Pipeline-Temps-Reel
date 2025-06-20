@@ -20,17 +20,19 @@ import java.util.List;
 @Service
 public class ServiceAlerte {
     private DMERepository dme_jpa;
+    private ResultatRepository resultat_jpa;
     private SeuilPR_JPA seuilPRJpa;
     private ResultatRepository resultatJPA;
     private ProducerService producer;
     private CustomerService consumer ;
 
-    public ServiceAlerte(CustomerService consumer, ProducerService producer, ResultatRepository resultatJPA, SeuilPR_JPA seuilPRJpa, DMERepository dme_jpa) {
+    public ServiceAlerte(CustomerService consumer, ProducerService producer, ResultatRepository resultatJPA, SeuilPR_JPA seuilPRJpa, DMERepository dme_jpa,ResultatRepository resultat_jpa) {
         this.consumer = consumer;
         this.producer = producer;
         this.resultatJPA = resultatJPA;
         this.seuilPRJpa = seuilPRJpa;
         this.dme_jpa = dme_jpa;
+        this.resultat_jpa= resultatJPA;
     }
 
     @Transactional
@@ -40,18 +42,25 @@ public class ServiceAlerte {
         double seuilMin;
         double seuilMax;
         AlerteDTO alerteDTO=new AlerteDTO();
-        DME dme = dme_jpa.findById(id).orElse(null);
+        DME dme = dme_jpa.getDMEById(id);
+        System.out.println("SA ########"+dme.toString());
         System.out.println("1 - ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ");
         if (dme!=null){
-            List<Resultat>  resultats = dme.getResultatList();
+            System.out.println("SA ########"+dme.toString());
+            //List<Resultat>  resultats = dme.getResultatList();
+            List<Resultat>  resultats = resultat_jpa.getResultatsByDossier(dme);
+            System.out.println("SA ######## befor if"+resultats.toString());
             if (resultats!=null){
+                System.out.println("SA ######## after if"+resultats.toString());
                 System.out.println("2 - ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ");
                 for (Resultat resultat:resultats){
                     System.out.println("3 - ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ✅ ");
 
                     valeur = resultat.getValeur();
                     id_ind = resultat.getIndicateur().getId_indicateur();
-                    SeuilPR seuilPR =seuilPRJpa.findSeuilPRByIndicateurIdAndPatientId(idPatient,id_ind) ;
+                    //SeuilPR seuilPR =seuilPRJpa.findSeuilPRByIndicateurIdAndPatientId(idPatient,id_ind) ;
+                    SeuilPR seuilPR = seuilPRJpa.getSeuilPRByIndicateur_IdAndPatient_Id(id_ind, idPatient);
+                    System.out.println("SA ######### : "+seuilPR.toString());
                     alerteDTO.setResultat(resultat);
                     if(seuilPR != null){
                         // affecter seui min et seuilMAX

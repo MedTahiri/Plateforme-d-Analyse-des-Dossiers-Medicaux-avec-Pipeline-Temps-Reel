@@ -18,4 +18,10 @@ public interface SeuilPR_JPA extends JpaRepository<SeuilPR,Long> {
     SeuilPR findSeuilPRByIndicateurIdAndPatientId(@Param("patient_id") long patient_id, @Param("indicateur_id") long indicateur_id);
     SeuilPR findSeuilPRByIndicateurAndPatientAndMedcin(Indicateur indicateur, Patient patient , Medecin medecin);
     List<SeuilPR> findByPatientId(Long patientId);
+
+    SeuilPR getSeuilPRByIndicateurIdAndPatientId(Long indicateurId, Long patientId);
+
+    SeuilPR getSeuilPRByIndicateur_IdAndPatientId(Long indicateurId, Long patientId);
+
+    SeuilPR getSeuilPRByIndicateur_IdAndPatient_Id(Long indicateurId, Long patientId);
 }

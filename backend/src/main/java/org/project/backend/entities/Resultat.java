@@ -30,5 +30,4 @@ public class Resultat {
     @JoinColumn(name = "indicateur_id")
     private Indicateur indicateur;
 
-
 }

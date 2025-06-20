@@ -69,4 +69,8 @@ public class DMEService {
     public List<DME> getDmeByPatient(Long patientId) {
         return dmeRepository.findDMESByPatient_Id(patientId);
     }
+
+    public DME findDmeByURL(String filename) {
+        return dmeRepository.getDMEByUrl(filename);
+    }
 }

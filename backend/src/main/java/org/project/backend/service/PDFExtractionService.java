@@ -1,7 +1,5 @@
 package org.project.backend.service;
 
-import org.project.backend.entities.*;
-import org.project.backend.repository.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.project.backend.entities.DME;
@@ -67,12 +65,12 @@ public class PDFExtractionService {
         try (PDDocument doc = PDDocument.load(filePath.toFile())) {
             String text = new PDFTextStripper().getText(doc);
             logger.info("Contenu PDF extrait :\n{}", text);
-            parseAndSave(text);
+            parseAndSave(text,filename);
         }
         return 1;
     }
 
-    private void parseAndSave(String content) throws IOException {
+    private void parseAndSave(String content, String filename) throws IOException {
         String[] lines = content.split("\\r?\\n");
         int errors = 0;
         DME currentDme = null;
@@ -82,7 +80,7 @@ public class PDFExtractionService {
                 String line = lines[i].trim();
 
                 if (line.startsWith("Patient ID:")) {
-                    currentDme = handlePatient(lines, i);
+                    currentDme = handlePatient(lines, i,filename);
                     i++; // Skip DOB line
                 } else if (line.startsWith("Indicateur:") && currentDme != null) {
                     handleIndicator(lines, i, currentDme);
@@ -97,7 +95,7 @@ public class PDFExtractionService {
         }
     }
 
-    private DME handlePatient(String[] lines, int idx) throws IOException {
+    private DME handlePatient(String[] lines, int idx, String filename) throws IOException {
         long patientId = Long.parseLong(extractValue(lines[idx], "Patient ID:"));
         LocalDate dob = LocalDate.parse(extractValue(lines[idx + 1], "Date de Naissance:"));
 
@@ -114,6 +112,7 @@ public class PDFExtractionService {
         DME dme = new DME();
         dme.setDate_creation(LocalDate.now());
         dme.setPatient(patient);
+        dme.setUrl(filename);
         dme = dmeRepo.save(dme);
         logger.info("DME créé avec ID={} pour patient ID={}", dme.getId(), patient.getId());
 

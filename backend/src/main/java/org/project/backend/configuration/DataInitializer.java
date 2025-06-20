@@ -8,6 +8,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Component
@@ -30,7 +31,7 @@ public class DataInitializer implements ApplicationRunner {
                     passwordEncoder.encode("admin123"),
                     "admin",
                     "admin",
-                    new Date(2003,10,30)
+                    LocalDate.of(2003,10,30)
             );
             adminService.save(admin);
             System.out.println("✅ Default admin created.");

@@ -24,15 +24,16 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/dme/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
-                        .requestMatchers("/api/medecins/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
-                        .requestMatchers("/api/patients/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
-                        .requestMatchers("/api/rendezvous/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
-                        .requestMatchers("/api/resultat/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
-                        .requestMatchers("/api/secretaires/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
-                        .requestMatchers("/auth/**").permitAll()
-                        .anyRequest().authenticated()
-                        // .anyRequest().permitAll()
+                        //.requestMatchers("/api/dme/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        //.requestMatchers("/api/medecins/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        //.requestMatchers("/api/patients/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        //.requestMatchers("/api/rendezvous/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        //.requestMatchers("/api/resultat/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        //.requestMatchers("/api/secretaires/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        //.requestMatchers("/api/files/**").hasAnyRole("ADMIN","MEDECIN","SECRETAIRE_MEDICAL","PATIENT")
+                        //.requestMatchers("/auth/**").permitAll()
+                        //.anyRequest().authenticated()
+                         .anyRequest().permitAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable) // pas de page HTML de login
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // CORS activé

@@ -1,7 +1,10 @@
 package org.project.backend.controller;
 
+import org.project.backend.entities.DME;
+import org.project.backend.service.DMEService;
 import org.project.backend.service.FileStorageService;
 import org.project.backend.service.PDFExtractionService;
+import org.project.backend.service.ServiceAlerte;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +23,6 @@ import java.util.Map;
 public class FileUploadController {
 
 
-
     private static final Logger logger = LoggerFactory.getLogger(FileUploadController.class);
 
     // Maximum file size (10MB)
@@ -28,44 +30,76 @@ public class FileUploadController {
 
     private final FileStorageService fileStorageService;
     private final PDFExtractionService pdfExtractionService;
+    private final ServiceAlerte serviceAlerte;
+    private final DMEService dmeService;
 
     @Autowired
     public FileUploadController(FileStorageService fileStorageService,
-                                PDFExtractionService pdfExtractionService) {
+                                PDFExtractionService pdfExtractionService, ServiceAlerte serviceAlerte,DMEService dmeService) {
         this.fileStorageService = fileStorageService;
         this.pdfExtractionService = pdfExtractionService;
+        this.serviceAlerte = serviceAlerte;
+        this.dmeService = dmeService;
     }
 
     @PostMapping("/upload")
     public ResponseEntity<Map<String, Object>> uploadFile(@RequestParam("file") MultipartFile file) {
         Map<String, Object> response = new HashMap<>();
 
+
+        // Validate file
+        String validationError = validateFile(file);
+        if (validationError != null) {
+            response.put("status", "error");
+            response.put("message", validationError);
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        String filename = fileStorageService.storeFile(file);
+        logger.info("File uploaded successfully: {}", filename);
+
         try {
-            // Validate file
-            String validationError = validateFile(file);
-            if (validationError != null) {
+            // Sanitize filename to prevent path traversal
+            if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
                 response.put("status", "error");
-                response.put("message", validationError);
+                response.put("message", "Invalid filename");
                 return ResponseEntity.badRequest().body(response);
             }
 
-            String fileName = fileStorageService.storeFile(file);
-            logger.info("File uploaded successfully: {}", fileName);
+            int recordsProcessed = pdfExtractionService.processPDF(filename);
+            logger.info("PDF processed successfully: {} records", recordsProcessed);
+
+
 
             response.put("status", "success");
-            response.put("message", "File uploaded successfully");
-            response.put("filename", fileName);
-            response.put("fileSize", file.getSize());
-            response.put("originalName", file.getOriginalFilename());
+            response.put("message", "PDF processed successfully");
+            response.put("recordsProcessed", recordsProcessed);
+            response.put("filename", filename);
+
+            DME dme = dmeService.findDmeByURL(filename);
+
+            System.out.println("FUC ########"+dme.toString());
+            Long dmeId = dme.getId();
+            Long patientId = dme.getPatient().getId();
+
+            serviceAlerte.Alerte(dmeId, patientId);
 
             return ResponseEntity.ok(response);
 
-        } catch (Exception e) {
-            logger.error("Error uploading file: {}", e.getMessage(), e);
+        } catch (IOException e) {
+            logger.error("Error processing PDF {}: {}", filename, e.getMessage(), e);
             response.put("status", "error");
-            response.put("message", "Failed to upload file: " + e.getMessage());
+            response.put("message", "Error processing PDF: " + e.getMessage());
+            response.put("filename", filename);
+            return ResponseEntity.badRequest().body(response);
+        } catch (Exception e) {
+            logger.error("Unexpected error processing PDF {}: {}", filename, e.getMessage(), e);
+            response.put("status", "error");
+            response.put("message", "Unexpected error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+
+
     }
 
     @PostMapping("/upload-and-process")

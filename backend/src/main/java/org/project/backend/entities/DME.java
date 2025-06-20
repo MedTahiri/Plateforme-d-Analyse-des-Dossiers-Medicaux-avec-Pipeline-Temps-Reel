@@ -42,5 +42,15 @@ public class DME {
         this.dateCreation=now;
     }
 
-
+    @Override
+    public String toString() {
+        return "--------------------DME{" +
+                "id=" + id +
+                ", dateCreation=" + dateCreation +
+                ", patient=" + patient.getName() +
+//                ", resultatList=" + resultatList +
+                ", url='" + url + '\'' +
+//                ", medecins=" + medecins +
+                '}';
+    }
 }

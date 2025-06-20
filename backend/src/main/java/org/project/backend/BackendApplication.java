@@ -29,7 +29,7 @@ public class BackendApplication {
 ////            patientRepository.save(p); // Save the patient to the database
 //        };
 //    }
-/*
+
 @Bean
 public CommandLineRunner commandLineRunner(SeuilPR_JPA seuilPRJpa,
                                            ServiceAlerte serviceAlerte,
@@ -45,6 +45,6 @@ public CommandLineRunner commandLineRunner(SeuilPR_JPA seuilPRJpa,
         System.out.println(resultat);
         producerService.producer(1, "HHOOOOOPPPPPPPPPPPP");
     };
-}*/
+}
 
 }

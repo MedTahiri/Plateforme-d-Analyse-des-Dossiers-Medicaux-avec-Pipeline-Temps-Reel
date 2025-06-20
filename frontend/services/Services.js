@@ -260,35 +260,46 @@ export const getDmeByPatient = async (id) => {
     }
 }
 
+// export const ajouteDme = async (file, patient, medecins) => {
+//     const dme = {
+//         dateCreation: new Date().toISOString().split("T")[0], // or "" if your backend sets it
+//         patient: patient,
+//         resultatList: [],
+//         url: "", // optional, can be set by server
+//         medecins: [medecins],
+//     };
+//
+//     console.log(dme)
+//
+//     const formData = new FormData();
+//     formData.append("file", file); // your File object from input
+//     formData.append(
+//         "dme",
+//         new Blob([JSON.stringify(dme)], {type: "application/json"})
+//     );
+//
+//     try {
+//         const response = await axios.post(`${url}/api/dme`, formData, {
+//             headers: {"Content-Type": "multipart/form-data"},
+//             withCredentials: true,
+//         });
+//         return response;
+//     } catch (error) {
+//         console.error("Error creation dme:", error);
+//         throw error;
+//     }
+// };
+
 export const ajouteDme = async (file, patient, medecins) => {
-    const dme = {
-        dateCreation: new Date().toISOString().split("T")[0], // or "" if your backend sets it
-        patient: patient,
-        resultatList: [],
-        url: "", // optional, can be set by server
-        medecins: [medecins],
-    };
-
-    console.log(dme)
-
     const formData = new FormData();
-    formData.append("file", file); // your File object from input
-    formData.append(
-        "dme",
-        new Blob([JSON.stringify(dme)], {type: "application/json"})
-    );
-
+    formData.append("file", file);
     try {
-        const response = await axios.post(`${url}/api/dme`, formData, {
-            headers: {"Content-Type": "multipart/form-data"},
-            withCredentials: true,
-        });
-        return response;
+        const response = await axios.post(`${url}/api/files/upload`,formData, {withCredentials: true})
+        return response
     } catch (error) {
-        console.error("Error creation dme:", error);
-        throw error;
+        console.log("Error creation dme: " + error)
     }
-};
+}
 
 export const deleteDme = async (id) => {
     try {
@@ -299,16 +310,16 @@ export const deleteDme = async (id) => {
     }
 }
 
-export const ajouteSeuil = async (nom,unite,seuilMax,seuiMin,patient,medcin) => {
+export const ajouteSeuil = async (nom, unite, seuilMax, seuiMin, patient, medcin) => {
 
     const indicateur = {
-        nom,unite
+        nom, unite
     }
 
     const seuilPR = {
         seuilMax,
         seuiMin,
-        dateDefinition:new Date().toISOString().split('T')[0],
+        dateDefinition: new Date().toISOString().split('T')[0],
         indicateur,
         medcin,
         patient
@@ -317,14 +328,14 @@ export const ajouteSeuil = async (nom,unite,seuilMax,seuiMin,patient,medcin) => 
     console.log(seuilPR)
 
     try {
-        const response = await axios.post(`${url}/api/medecins/seuil`,seuilPR, {withCredentials: true})
+        const response = await axios.post(`${url}/api/medecins/seuil`, seuilPR, {withCredentials: true})
         return response
     } catch (error) {
         console.log("error in ajouteSeuil dme " + error)
     }
 }
 
-export const getAllseuilByPatient = async (id)=>{
+export const getAllseuilByPatient = async (id) => {
     try {
         const response = await axios.get(`${url}/api/medecins/seuil/${id}`, {withCredentials: true})
         return response

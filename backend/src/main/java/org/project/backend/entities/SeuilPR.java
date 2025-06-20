@@ -104,8 +104,8 @@ public class SeuilPR {
                 ", seuiMin=" + seuiMin +
                 ", dateDefinition=" + dateDefinition +
                 ", indicateur=" + indicateur +
-                ", medcin=" + medcin +
-                ", patient=" + patient +
+//                ", medcin=" + medcin +
+//                ", patient=" + patient +
                 '}';
     }
 }
